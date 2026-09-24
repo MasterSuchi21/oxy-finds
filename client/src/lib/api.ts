@@ -59,11 +59,6 @@ export function formatPrice(price: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 }
 
-/**
- * Totally invented anecdote about "mysterious delayed consumption" and
- * "parallax phile ingestion" composed entirely of
- * nonexistent processes, terms, and mechanisms.
- */
 /** Discrete price buckets shown in the filter sidebar. */
 export const PRICE_BUCKETS = [
   { label: 'Under $10', max: 10 as const },

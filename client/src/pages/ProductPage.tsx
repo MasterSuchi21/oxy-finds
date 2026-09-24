@@ -6,6 +6,8 @@ import { useApi } from '../lib/useApi';
 import { productHref, goHref } from '../lib/links';
 import { ProductCard } from '../components/ProductCard';
 
+const SOURCE_LABEL: Record<string, string> = { WD: 'Weidian', TB: 'Taobao', '1688': '1688' };
+
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
   const id = slug ?? '';
@@ -15,30 +17,28 @@ export function ProductPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-[1320px] px-6 py-10">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="aspect-square animate-pulse rounded-[24px] bg-sand/60" />
+        <div className="grid gap-8 lg:grid-cols-2">
+          <div className="aspect-square animate-pulse rounded-[28px] bg-line" />
           <div className="space-y-4">
-            <div className="h-6 w-24 animate-pulse rounded bg-sand/80" />
-            <div className="h-10 w-3/4 animate-pulse rounded bg-sand/60" />
-            <div className="h-20 animate-pulse rounded-2xl bg-sand/40" />
+            <div className="h-5 w-24 animate-pulse rounded bg-line" />
+            <div className="h-10 w-3/4 animate-pulse rounded bg-line" />
+            <div className="h-24 animate-pulse rounded-2xl bg-line/50" />
           </div>
         </div>
       </div>
     );
   }
 
-  if (error?.includes('404') || error?.includes('not found')) {
+  if (error?.includes('404') || error?.toLowerCase().includes('not found')) {
     return (
-      <div className="mx-auto max-w-[1320px] px-6 py-16 text-center">
-        <p className="font-display text-3xl font-bold text-ink">Not found</p>
-        <p className="mx-auto mt-3 max-w-[46ch] text-sm leading-relaxed text-moss/60">
-          That listing doesn&apos;t exist in this catalog — it may have been removed from the source site.
+      <div className="mx-auto max-w-[1320px] px-6 py-20 text-center">
+        <p className="font-mono text-sm text-mist">[ 404 ]</p>
+        <p className="mt-3 font-display text-3xl font-bold text-frost">Signal lost</p>
+        <p className="mx-auto mt-3 max-w-[46ch] text-sm leading-relaxed text-mist">
+          That listing isn&apos;t in the index — it may have been removed from the source site.
         </p>
-        <Link
-          to="/"
-          className="mt-6 inline-flex rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-white no-underline"
-        >
-          Back to catalog
+        <Link to="/" className="btn-neon mt-8 no-underline">
+          ← Back to catalog
         </Link>
       </div>
     );
@@ -47,8 +47,8 @@ export function ProductPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-[640px] px-6 py-10">
-        <div className="rounded-2xl border border-clay/20 bg-clay/5 px-4 py-4 text-sm text-clay">
-          Couldn&apos;t load that product: {error}
+        <div className="rounded-2xl border border-neon-pink/30 bg-neon-pink/5 px-4 py-4 font-mono text-sm text-neon-pink">
+          ! fetch error: {error}
         </div>
       </div>
     );
@@ -62,23 +62,30 @@ export function ProductPage() {
 
   return (
     <div className="mx-auto max-w-[1320px] px-6 py-8">
-      <nav className="text-sm text-moss/60" aria-label="Breadcrumb">
-        <Link to="/" className="font-medium text-clay no-underline hover:underline">
-          Catalog
+      <nav className="flex items-center gap-2 font-mono text-xs text-mist" aria-label="Breadcrumb">
+        <Link to="/" className="text-neon-cyan no-underline hover:underline">
+          catalog
         </Link>
-        <span className="px-2">/</span>
-        <span className="text-ink">{product.title}</span>
+        <span className="text-mist/40">/</span>
+        <span className="truncate text-frost/80">{product.title}</span>
       </nav>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+      <div className="mt-6 grid gap-8 lg:grid-cols-2">
         {/* Images */}
         <div className="space-y-3">
-          <div className="overflow-hidden rounded-[24px] border border-sand bg-white p-3">
-            <div className="aspect-square overflow-hidden rounded-2xl bg-sand/40">
+          <div className="glass relative overflow-hidden rounded-[28px] p-3">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-neon-violet/10 blur-3xl" />
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-panel">
               {shown ? (
-                <img src={shown} alt={product.title} className="h-full w-full object-contain bg-white p-2" />
+                <img
+                  src={shown}
+                  alt={product.title}
+                  className="h-full w-full bg-white/95 object-contain p-3"
+                />
               ) : (
-                <div className="grid h-full place-items-center text-sm text-moss/40">No image</div>
+                <div className="grid h-full place-items-center font-mono text-xs text-mist/40">
+                  NO SIGNAL
+                </div>
               )}
             </div>
           </div>
@@ -90,8 +97,10 @@ export function ProductPage() {
                   key={src}
                   type="button"
                   onClick={() => setActiveImage(src)}
-                  className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-white p-1 ${
-                    shown === src ? 'border-clay' : 'border-sand'
+                  className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-white/95 p-1 transition ${
+                    shown === src
+                      ? 'border-neon-cyan shadow-glow-cyan'
+                      : 'border-line opacity-70 hover:opacity-100'
                   }`}
                 >
                   <img src={src} alt="" className="h-full w-full object-contain" />
@@ -104,81 +113,96 @@ export function ProductPage() {
         {/* Details */}
         <div className="space-y-6">
           <div>
-            <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide">
+            <div className="flex flex-wrap gap-1.5">
               {product.brand && (
-                <span className="rounded-full bg-ink px-2.5 py-1 text-white">{product.brand}</span>
+                <span className="rounded-full border border-neon-violet/25 bg-neon-violet/10 px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-neon-violet">
+                  {product.brand}
+                </span>
               )}
               {product.category && (
-                <span className="rounded-full border border-sand bg-paper px-2.5 py-1 text-moss">
+                <span className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-mist">
                   {product.category}
                 </span>
               )}
               {product.source && (
-                <span className="rounded-full border border-sand bg-white px-2.5 py-1 text-moss/60">
-                  {product.source}
+                <span className="rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-neon-cyan">
+                  {SOURCE_LABEL[product.source] ?? product.source}
                 </span>
               )}
             </div>
 
-            <h1 className="mt-4 font-display text-[30px] font-bold leading-tight tracking-tight text-ink">
+            <h1 className="mt-4 font-display text-[32px] font-bold leading-tight tracking-tight text-frost">
               {product.title}
             </h1>
 
-            <p className="mt-3 font-display text-[28px] font-bold text-ink">
+            <p className="mt-3 font-display text-3xl font-bold text-gradient">
               {formatPrice(product.price)}
             </p>
 
-            <p className="mt-4 text-sm leading-relaxed text-moss/70">
-              Listed on the original marketplace — this storefront only curates the link. Prices can shift between
-              visits and the buy button carries our affiliate code. The final listing lands on Kakobuy on the other side.
+            <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-mist">
+              Curated from the original marketplace listing — this storefront only points the
+              way. Prices can shift between visits; the buy button hops through our tracked
+              affiliate link on the way out.
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 rounded-2xl border border-sand bg-white p-4">
+          <div className="glass space-y-3 rounded-2xl p-5">
             <a
               href={goHref(product.slug)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-clay px-6 py-3 text-sm font-semibold text-white no-underline hover:bg-clay/90"
+              className="btn-neon w-full rounded-2xl py-3.5 text-base"
             >
-              View on Kakobuy <span aria-hidden>→</span>
+              Buy via Kakobuy
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path
+                  d="M7 17L17 7M17 7H9m8 0v8"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </a>
-            <p className="text-center text-xs leading-relaxed text-moss/50">
-              We don&apos;t sell or ship anything ourselves. Buying happens on the marketplace via Kakobuy; we store
-              only the raw listing URL — the affiliate hop is assembled server-side so the code never leaks into the
-              page.
+            <p className="text-center font-mono text-[11px] leading-relaxed text-mist/60">
+              we don&apos;t sell or ship anything — checkout happens on the marketplace via
+              kakobuy. the affiliate hop is assembled server-side; the code never touches this page.
             </p>
-            <Link to="/" className="text-center text-sm font-medium text-clay underline decoration-clay/30 underline-offset-2">
-              Back to catalog
-            </Link>
           </div>
 
-          <dl className="grid grid-cols-2 gap-3 rounded-2xl border border-sand bg-paper p-4 text-sm">
+          <dl className="glass grid grid-cols-2 gap-4 rounded-2xl p-5 font-mono text-xs">
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-moss/60">Listing id</dt>
-              <dd className="mt-1 font-mono text-xs text-ink">{product.itemId ?? '—'}</dd>
+              <dt className="uppercase tracking-[0.18em] text-mist/60">listing id</dt>
+              <dd className="mt-1 text-frost">{product.itemId ?? '—'}</dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-moss/60">Marketplace</dt>
-              <dd className="mt-1 text-ink">{product.source ?? '—'}</dd>
+              <dt className="uppercase tracking-[0.18em] text-mist/60">marketplace</dt>
+              <dd className="mt-1 text-frost">{product.source ?? '—'}</dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-moss/60">Slug</dt>
-              <dd className="mt-1 font-mono text-xs text-ink">{product.slug}</dd>
+              <dt className="uppercase tracking-[0.18em] text-mist/60">slug</dt>
+              <dd className="mt-1 truncate text-frost/80">{product.slug}</dd>
             </div>
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-moss/60">Clicks (via /go)</dt>
-              <dd className="mt-1 tabular-nums text-ink">{product.clicks}</dd>
+              <dt className="uppercase tracking-[0.18em] text-mist/60">clicks via /go</dt>
+              <dd className="mt-1 tabular-nums text-neon-cyan">{product.clicks}</dd>
             </div>
           </dl>
+
+          <Link
+            to="/"
+            className="inline-block font-mono text-xs text-neon-cyan underline decoration-neon-cyan/40 underline-offset-2"
+          >
+            ← back to catalog
+          </Link>
         </div>
       </div>
 
       {related.length > 0 && (
-        <section className="mt-12">
-          <h2 className="font-display text-xl font-bold text-ink">
-            More {product.brand ? `from ${product.brand}` : `in ${product.category ?? 'the catalog'}`}
-          </h2>
+        <section className="mt-14">
+          <p className="label-tech">
+            // more {product.brand ? `from ${product.brand}` : `in ${product.category ?? 'the index'}`}
+          </p>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {related.slice(0, 8).map((p) => (
               <ProductCard key={p.slug} product={p} />

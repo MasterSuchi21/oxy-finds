@@ -2,10 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Friendly focus ring that follows each card's radius and respects the palette. */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-void font-body text-frost antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(34, 211, 238, 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(167, 139, 250, 0.07), transparent);
+    background-attachment: fixed;
+  }
+
+  /* Subtle engineering grid over the whole viewport. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(148, 163, 199, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 199, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%);
+  }
+
+  ::selection {
+    background: rgba(34, 211, 238, 0.3);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #05070d;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 199, 0.22);
+    border-radius: 8px;
+    border: 2px solid #05070d;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(34, 211, 238, 0.4);
+  }
+}
+
+@layer components {
+  /* Frosted glass surface used for panels and cards. */
+  .glass {
+    @apply border border-line bg-white/[0.03] backdrop-blur-xl;
+  }
+
+  .glass-hover {
+    @apply transition duration-300 hover:border-neon-cyan/30 hover:bg-white/[0.05];
+  }
+
+  /* Gradient headline text. */
+  .text-gradient {
+    @apply bg-neon-gradient bg-clip-text text-transparent;
+  }
+
+  /* Small uppercase section label with a cyan tick. */
+  .label-tech {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-neon-cyan/90;
+  }
+
+  /* Primary neon button. */
+  .btn-neon {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-neon-gradient px-5 py-2.5 text-sm font-semibold text-void shadow-glow-cyan transition duration-300 hover:shadow-glow-violet hover:brightness-110 active:scale-[0.98];
+  }
+
+  /* Secondary outline button. */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-frost transition duration-300 hover:border-neon-violet/40 hover:bg-white/[0.06];
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
