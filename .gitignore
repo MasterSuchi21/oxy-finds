@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+*.log
+tmp/
+.cache/
+.DS_Store
+
+# Scraper artifacts (large, regenerable)
+data/products.jsonl
+data/product-urls.json
+data/failures.json

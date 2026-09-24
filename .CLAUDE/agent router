@@ -1,0 +1,22 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://agentrouter.org/",
+    "ANTHROPIC_AUTH_TOKEN": "",
+    "ANTHROPIC_API_KEY": "sk-ocqVG4EI0FXHsHQQP1dvKI3ablVFPkScRs4qGUkSE6nJ46cI",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.3",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5.3",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v3.1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v3.1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(node --check vite.config.js)",
+      "Bash(node --check tailwind.config.js)",
+      "Bash(node --check postcss.config.js)",
+      "Bash(node --check resources/js/app.js)",
+      "Bash(node --check resources/js/bootstrap.js)",
+      "Bash(npm --version)",
+      "Bash(npm install *)"
+    ]
+  }
+}

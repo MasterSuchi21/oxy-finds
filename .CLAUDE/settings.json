@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP '\\(?<=elementor-size-default\">\\)[^<]{2,60}' rgd.html)"
+    ]
+  }
+}
