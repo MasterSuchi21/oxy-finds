@@ -7,68 +7,63 @@ const SOURCE_LABEL: Record<string, string> = { WD: 'Weidian', TB: 'Taobao', '168
 
 export function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white/[0.03] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-neon-cyan/30 hover:shadow-card">
-      {/* Top edge glow line on hover */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-neon-gradient opacity-0 transition duration-300 group-hover:opacity-100" />
-
+    <article className="group card card-hover flex flex-col overflow-hidden">
       <Link to={productHref(product.slug)} className="block p-3 pb-0">
-        <div className="relative aspect-square overflow-hidden rounded-xl bg-panel">
+        <div className="relative aspect-square overflow-hidden rounded-lg bg-raised">
           {product.image ? (
             <img
               src={product.image}
               alt={product.title}
               loading="lazy"
-              className="h-full w-full object-contain p-4 transition duration-500 group-hover:scale-105"
+              className="h-full w-full object-contain p-3 transition duration-200 group-hover:scale-[1.02]"
             />
           ) : (
-            <div className="grid h-full place-items-center font-mono text-xs text-mist/40">
-              NO SIGNAL
-            </div>
+            <div className="grid h-full place-items-center text-xs text-subtle">No image</div>
           )}
           {product.source && (
-            <span className="absolute left-2 top-2 rounded-md border border-line bg-void/80 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-neon-cyan backdrop-blur">
+            <span className="absolute left-2 top-2 rounded bg-void/90 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-mist">
               {SOURCE_LABEL[product.source] ?? product.source}
             </span>
           )}
           {product.featured && (
-            <span className="absolute right-2 top-2 rounded-md bg-neon-gradient px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-void">
-              Drop
+            <span className="absolute right-2 top-2 rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-void">
+              Featured
             </span>
           )}
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex flex-wrap gap-1.5">
           {product.brand && (
-            <span className="rounded-full border border-neon-violet/25 bg-neon-violet/10 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-neon-violet">
+            <span className="rounded bg-raised px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-mist">
               {product.brand}
             </span>
           )}
           {product.category && (
-            <span className="rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-mist">
+            <span className="rounded border border-line px-2 py-0.5 text-[10px] uppercase tracking-wide text-subtle">
               {product.category}
             </span>
           )}
         </div>
 
         <Link to={productHref(product.slug)} className="no-underline">
-          <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-frost transition group-hover:text-neon-cyan">
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-frost transition group-hover:text-link">
             {product.title}
           </h3>
         </Link>
 
-        <div className="mt-auto flex items-center justify-between gap-2">
-          <p className="font-display text-lg font-bold text-frost">{formatPrice(product.price)}</p>
+        <div className="mt-auto flex items-center justify-between gap-2 pt-1">
+          <p className="text-base font-semibold tabular-nums text-frost">{formatPrice(product.price)}</p>
           <a
             href={goHref(product.slug)}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-neon-gradient text-void shadow-glow-cyan transition hover:shadow-glow-violet active:scale-95"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-void transition hover:bg-white active:scale-95"
             aria-label={`Open ${product.title} on Kakobuy`}
             title="Buy via Kakobuy"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path
                 d="M7 17L17 7M17 7H9m8 0v8"
                 stroke="currentColor"
@@ -86,11 +81,11 @@ export function ProductCard({ product }: { product: Product }) {
 
 export function ProductGridSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="rounded-2xl border border-line bg-white/[0.03] p-3" aria-hidden>
-          <div className="aspect-square animate-pulse rounded-xl bg-line" />
-          <div className="mt-4 h-4 w-3/4 animate-pulse rounded bg-line" />
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="card p-3" aria-hidden>
+          <div className="aspect-square animate-pulse rounded-lg bg-line" />
+          <div className="mt-3 h-4 w-3/4 animate-pulse rounded bg-line" />
           <div className="mt-2 h-4 w-1/2 animate-pulse rounded bg-line/60" />
         </div>
       ))}

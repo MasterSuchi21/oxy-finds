@@ -8,76 +8,67 @@
   }
 
   body {
-    @apply bg-void font-body text-frost antialiased;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(34, 211, 238, 0.08), transparent),
-      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(167, 139, 250, 0.07), transparent);
-    background-attachment: fixed;
-  }
-
-  /* Subtle engineering grid over the whole viewport. */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image:
-      linear-gradient(rgba(148, 163, 199, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 199, 0.045) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%);
+    @apply bg-void font-sans text-frost antialiased;
   }
 
   ::selection {
-    background: rgba(34, 211, 238, 0.3);
+    background: rgba(96, 165, 250, 0.25);
   }
 
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
+
   ::-webkit-scrollbar-track {
-    background: #05070d;
+    background: #09090b;
   }
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 199, 0.22);
-    border-radius: 8px;
-    border: 2px solid #05070d;
+    background: #3f3f3f;
+    border-radius: 4px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(34, 211, 238, 0.4);
+    background: #525252;
   }
 }
 
 @layer components {
-  /* Frosted glass surface used for panels and cards. */
-  .glass {
-    @apply border border-line bg-white/[0.03] backdrop-blur-xl;
+  .card {
+    @apply rounded-xl border border-line bg-panel;
   }
 
-  .glass-hover {
-    @apply transition duration-300 hover:border-neon-cyan/30 hover:bg-white/[0.05];
+  .card-hover {
+    @apply transition-colors duration-150 hover:border-[#3a3a3a] hover:bg-raised;
   }
 
-  /* Gradient headline text. */
-  .text-gradient {
-    @apply bg-neon-gradient bg-clip-text text-transparent;
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-wider text-subtle;
   }
 
-  /* Small uppercase section label with a cyan tick. */
-  .label-tech {
-    @apply font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-neon-cyan/90;
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-void transition duration-150 hover:bg-white active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:cursor-not-allowed disabled:opacity-50;
   }
 
-  /* Primary neon button. */
-  .btn-neon {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-neon-gradient px-5 py-2.5 text-sm font-semibold text-void shadow-glow-cyan transition duration-300 hover:shadow-glow-violet hover:brightness-110 active:scale-[0.98];
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-transparent px-4 py-2.5 text-sm font-medium text-frost transition duration-150 hover:bg-raised focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link;
   }
 
-  /* Secondary outline button. */
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-frost transition duration-300 hover:border-neon-violet/40 hover:bg-white/[0.06];
+  .input {
+    @apply w-full rounded-lg border border-line bg-void px-3.5 py-2.5 text-sm text-frost placeholder:text-subtle outline-none transition focus:border-link/50 focus:ring-2 focus:ring-link/20;
+  }
+
+  .nav-shell {
+    @apply sticky top-0 z-40 border-b border-line bg-void/95 backdrop-blur-md;
+  }
+
+  .nav-link {
+    @apply relative rounded-md px-3 py-2 text-sm font-medium text-mist no-underline transition duration-150 hover:bg-raised hover:text-frost;
+  }
+
+  .nav-link-active {
+    @apply bg-raised text-frost;
   }
 }
 

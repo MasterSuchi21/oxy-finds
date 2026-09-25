@@ -6,6 +6,10 @@ import { useApi } from '../lib/useApi';
 import { ProductCard, ProductGridSkeleton } from '../components/ProductCard';
 import { FiltersSidebar } from '../components/FiltersSidebar';
 import type { AppliedFilters } from '../components/FiltersSidebar';
+import { CatalogHeader } from '../components/CatalogHeader';
+import { BestVersionsIntro } from '../components/BestVersionsIntro';
+
+const PAGE_LIMIT = 24;
 
 const SORT_LABELS: Record<SortKey, string> = {
   newest: 'Newest',
@@ -35,9 +39,10 @@ export function CatalogPage() {
     category: applied.category ?? undefined,
     minPrice: applied.priceMin || undefined,
     maxPrice: applied.priceMax || undefined,
+    featured: searchParams.get('featured') === 'true' ? 'true' : undefined,
     sort: searchParams.get('sort') ?? 'newest',
     page: searchParams.get('page') ?? undefined,
-    limit: '24',
+    limit: String(PAGE_LIMIT),
   });
 
   const url = `/api/products?${query}`;
@@ -46,6 +51,9 @@ export function CatalogPage() {
   const page = Math.max(1, Number(searchParams.get('page') ?? '1') || 1);
   const sort = (searchParams.get('sort') as SortKey | null) ?? 'newest';
   const q = searchParams.get('q') ?? '';
+  const isFeatured = searchParams.get('featured') === 'true';
+  const isHome =
+    !q && !applied.brand && !applied.category && !applied.priceMin && !applied.priceMax && !isFeatured;
 
   function updateParams(patch: Record<string, string | null | undefined>) {
     const next = new URLSearchParams(searchParams);
@@ -64,81 +72,103 @@ export function CatalogPage() {
     updateParams({ q: searchInput.trim() || null });
   }
 
+  function clearAllFilters() {
+    setSearchInput('');
+    updateParams({
+      q: null,
+      brand: null,
+      category: null,
+      minPrice: null,
+      maxPrice: null,
+      featured: null,
+      page: null,
+      sort: sort,
+    });
+  }
+
   return (
-    <div className="mx-auto flex max-w-[1320px] flex-col gap-6 px-6 py-8">
-      {/* Hero */}
-      <section className="glass relative overflow-hidden rounded-[28px]">
-        {/* Corner glow accents */}
-        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-neon-violet/15 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 -left-16 h-64 w-64 rounded-full bg-neon-cyan/10 blur-3xl" />
-
-        <div className="relative grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div>
-            <p className="label-tech">// Curated marketplace index</p>
-            <h1 className="mt-4 font-display text-[38px] font-bold leading-[0.95] tracking-tight text-frost sm:text-[52px]">
-              Find the piece.
-              <br />
-              <span className="text-gradient">Skip the noise.</span>
-            </h1>
-            <p className="mt-5 max-w-[56ch] text-[15px] leading-relaxed text-mist">
-              Roughly nine thousand listings from Weidian, Taobao and 1688 — filtered to the
-              sellers worth your freight. Search by brand, trim by price, and head out through a
-              tracked affiliate hop.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2 font-mono text-[11px]">
-              <span className="rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-3 py-1.5 text-neon-cyan">
-                ~9 000 items live
-              </span>
-              <span className="rounded-full border border-line px-3 py-1.5 text-mist">
-                partial match · “lacos” → Lacoste
-              </span>
-              <span className="rounded-full border border-line px-3 py-1.5 text-mist">
-                WD · TB · 1688
-              </span>
+    <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
+      {isHome && (
+        <section className="card p-6 sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+            <div>
+              <p className="eyebrow">Marketplace index</p>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-frost sm:text-4xl">
+                Find the piece. Skip the noise.
+              </h1>
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-mist">
+                Thousands of listings from Weidian, Taobao and 1688 — searchable in English with
+                prices in USD. Filter by brand, trim by price, and buy through a tracked affiliate
+                link.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2 text-xs text-mist">
+                <span className="rounded-md border border-line bg-raised px-2.5 py-1">~9,000 items</span>
+                <span className="rounded-md border border-line px-2.5 py-1">WD · TB · 1688</span>
+              </div>
             </div>
-          </div>
 
-          <form onSubmit={onSearchSubmit}>
-            <label className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist">
-              Query the index
-            </label>
-            <div className="mt-2 flex gap-2">
-              <div className="relative min-w-0 flex-1">
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-neon-cyan/70">
-                  ⌕
-                </span>
+            <form onSubmit={onSearchSubmit}>
+              <label className="text-xs font-medium text-mist">Search catalog</label>
+              <div className="mt-1.5 flex gap-2">
                 <input
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="brand, item, keyword…"
-                  className="w-full rounded-2xl border border-line bg-void/60 py-3.5 pl-10 pr-4 text-[15px] text-frost placeholder:font-mono placeholder:text-mist/40 outline-none transition focus:border-neon-cyan/50 focus:shadow-glow-cyan"
+                  placeholder="Brand, item, keyword…"
+                  className="input min-w-0 flex-1"
                 />
+                <button type="submit" className="btn-primary shrink-0">Search</button>
               </div>
-              <button type="submit" className="btn-neon shrink-0 rounded-2xl">
-                Scan
-              </button>
-            </div>
-            {q && (
-              <p className="mt-3 font-mono text-xs text-mist">
-                <span className="text-mist/60">&gt; filtering:</span>{' '}
-                <span className="text-neon-cyan">{q}</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearchInput('');
-                    updateParams({ q: null });
-                  }}
-                  className="ml-3 text-neon-pink underline decoration-neon-pink/40 underline-offset-2"
-                >
-                  clear
-                </button>
-              </p>
-            )}
-          </form>
-        </div>
-      </section>
+              {q && (
+                <p className="mt-2 text-xs text-mist">
+                  Filtering by <span className="font-medium text-frost">{q}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchInput('');
+                      updateParams({ q: null });
+                    }}
+                    className="ml-2 text-link hover:underline"
+                  >
+                    Clear
+                  </button>
+                </p>
+              )}
+            </form>
+          </div>
+        </section>
+      )}
 
-      <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      {!isHome && (
+        <>
+          <CatalogHeader
+            filters={{
+              q,
+              brand: applied.brand,
+              category: applied.category,
+              priceMin: applied.priceMin,
+              priceMax: applied.priceMax,
+              featured: isFeatured,
+            }}
+            result={{
+              total: data?.total ?? 0,
+              page,
+              pages: data?.pages ?? 1,
+              limit: data?.limit ?? PAGE_LIMIT,
+              shown: data?.items.length ?? 0,
+              loading,
+              error,
+            }}
+            searchInput={searchInput}
+            onSearchInputChange={setSearchInput}
+            onSearchSubmit={onSearchSubmit}
+            onPatch={updateParams}
+            onClearAll={clearAllFilters}
+          />
+          {isFeatured && <BestVersionsIntro />}
+        </>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
         <FiltersSidebar
           value={applied}
           onChange={(patch) =>
@@ -159,117 +189,115 @@ export function CatalogPage() {
           }}
           count={data?.total ?? 0}
           collapsed={filtersCollapsed}
-          onToggleCollapse={() => setFiltersCollapsed((c) => !c)}
+          onToggleCollapse={() => setFiltersCollapsed((x) => !x)}
         />
 
-        <div className="min-w-0 space-y-4">
-          <div className="glass flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-3">
-            <p className="font-mono text-xs text-mist">
-              {loading ? (
-                <span className="text-neon-cyan">scanning…</span>
-              ) : data ? (
-                <>
-                  <span className="font-semibold text-frost">{data.total.toLocaleString()}</span> hits
-                  {data.pages > 1 && (
-                    <>
-                      {' '}
-                      · <span className="tabular-nums text-neon-cyan">p{data.page}</span>
-                      <span className="text-mist/60">/{data.pages}</span>
-                    </>
-                  )}
-                  {q && <> · “{q}”</>}
-                </>
-              ) : (
-                '—'
-              )}
-            </p>
-            <label className="flex items-center gap-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist">Sort</span>
-              <select
-                value={SORT_KEYS.includes(sort as SortKey) ? sort : 'newest'}
-                onChange={(e) => updateParams({ sort: e.target.value })}
-                className="rounded-xl border border-line bg-void/60 px-3 py-1.5 font-mono text-xs text-frost outline-none transition focus:border-neon-cyan/50"
-              >
-                {SORT_KEYS.map((k) => (
-                  <option key={k} value={k} className="bg-panel">
-                    {SORT_LABELS[k]}
-                  </option>
+        <div className="min-w-0">
+          <div className="mb-4 flex min-h-[36px] flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-mist" aria-live="polite">
+              {isHome &&
+                (loading ? (
+                  <span className="inline-block h-3 w-28 animate-pulse rounded bg-line" aria-hidden />
+                ) : error ? (
+                  <span className="text-warn">Error loading products</span>
+                ) : (
+                  <>
+                    Showing{' '}
+                    <span className="tabular-nums font-medium text-frost">{data?.items.length ?? 0}</span>{' '}
+                    of{' '}
+                    <span className="tabular-nums font-medium text-frost">
+                      {(data?.total ?? 0).toLocaleString()}
+                    </span>
+                  </>
                 ))}
-              </select>
-            </label>
-          </div>
+            </p>
 
-          {error && (
-            <div className="rounded-2xl border border-neon-pink/30 bg-neon-pink/5 px-4 py-3 font-mono text-sm text-neon-pink">
-              ! index error: {error}
+            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Sort products">
+              <span className="text-xs text-subtle">Sort</span>
+              {SORT_KEYS.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => updateParams({ sort: key, page: null })}
+                  aria-pressed={sort === key}
+                  className={`rounded-md border px-2.5 py-1 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link ${
+                    sort === key
+                      ? 'border-accent bg-raised font-medium text-frost'
+                      : 'border-line text-mist hover:bg-raised hover:text-frost'
+                  }`}
+                >
+                  {SORT_LABELS[key]}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
           {loading && <ProductGridSkeleton />}
 
-          {!loading && data && data.items.length === 0 && (
-            <div className="glass rounded-2xl px-6 py-14 text-center">
-              <p className="font-mono text-sm text-mist">[ 0 results ]</p>
-              <p className="mx-auto mt-2 max-w-[48ch] text-sm leading-relaxed text-mist/70">
-                Nothing matched. Try clearing a filter or shortening the query — partial
-                words match, so a brand fragment is often enough.
-              </p>
+          {error && (
+            <div className="card p-8 text-center">
+              <p className="text-sm font-medium text-warn">Failed to load products</p>
+              <p className="mt-1 text-sm text-mist">{String(error)}</p>
             </div>
           )}
 
-          {!loading && data && data.items.length > 0 && (
+          {!loading && !error && data && (
             <>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-                {data.items.map((p) => (
-                  <ProductCard key={p.slug} product={p} />
-                ))}
-              </div>
-
-              {data.pages > 1 && (
-                <nav
-                  className="flex flex-wrap items-center justify-center gap-2 pt-2"
-                  aria-label="Pagination"
-                >
-                  <button
-                    type="button"
-                    disabled={page <= 1}
-                    onClick={() => updateParams({ page: String(page - 1) })}
-                    className="btn-ghost px-4 py-2 font-mono text-xs disabled:opacity-30"
-                  >
-                    ← prev
+              {data.items.length === 0 ? (
+                <div className="card p-10 text-center">
+                  <p className="text-sm font-medium text-frost">No matches</p>
+                  <p className="mt-1 text-sm text-mist">
+                    {q
+                      ? `Nothing matched "${q}"`
+                      : 'No products matched the active filters'}
+                    . Try broadening your criteria.
+                  </p>
+                  <button type="button" onClick={clearAllFilters} className="btn-primary mt-5">
+                    Clear all filters
                   </button>
+                </div>
+              ) : (
+                <>
+                  <div
+                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                    role="list"
+                    aria-label="Product results"
+                  >
+                    {data.items.map((p) => (
+                      <ProductCard key={p._id} product={p} />
+                    ))}
+                  </div>
 
-                  {pageNumbers(page, data.pages).map((n, i) =>
-                    n === null ? (
-                      <span key={`gap-${i}`} className="px-1 font-mono text-mist/40">
-                        …
-                      </span>
-                    ) : (
+                  {data.pages > 1 && (
+                    <nav
+                      className="mt-8 flex items-center justify-center gap-2"
+                      role="navigation"
+                      aria-label="Pagination"
+                    >
                       <button
-                        key={n}
                         type="button"
-                        onClick={() => updateParams({ page: String(n) })}
-                        aria-current={n === page ? 'page' : undefined}
-                        className={`rounded-xl border px-3 py-2 font-mono text-xs transition ${
-                          n === page
-                            ? 'border-transparent bg-neon-gradient font-semibold text-void shadow-glow-cyan'
-                            : 'border-line text-mist hover:border-neon-cyan/40 hover:text-frost'
-                        }`}
+                        onClick={() => updateParams({ page: String(page - 1) })}
+                        disabled={page <= 1}
+                        aria-label="Previous page"
+                        className="rounded-md border border-line px-3 py-1.5 text-sm text-frost transition hover:enabled:bg-raised disabled:cursor-not-allowed disabled:opacity-40"
                       >
-                        {n}
+                        Previous
                       </button>
-                    ),
+                      <span className="px-3 text-sm tabular-nums text-mist" aria-current="page">
+                        {page} / {data.pages}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateParams({ page: String(page + 1) })}
+                        disabled={page >= data.pages}
+                        aria-label="Next page"
+                        className="rounded-md border border-line px-3 py-1.5 text-sm text-frost transition hover:enabled:bg-raised disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        Next
+                      </button>
+                    </nav>
                   )}
-
-                  <button
-                    type="button"
-                    disabled={!data.hasMore}
-                    onClick={() => updateParams({ page: String(page + 1) })}
-                    className="btn-ghost px-4 py-2 font-mono text-xs disabled:opacity-30"
-                  >
-                    next →
-                  </button>
-                </nav>
+                </>
               )}
             </>
           )}
@@ -277,17 +305,4 @@ export function CatalogPage() {
       </div>
     </div>
   );
-}
-
-function pageNumbers(current: number, last: number): Array<number | null> {
-  if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1);
-
-  const out: Array<number | null> = [1];
-  const lo = Math.max(2, current - 1);
-  const hi = Math.min(last - 1, current + 1);
-  if (lo > 2) out.push(null);
-  for (let n = lo; n <= hi; n++) out.push(n);
-  if (hi < last - 1) out.push(null);
-  out.push(last);
-  return out;
 }

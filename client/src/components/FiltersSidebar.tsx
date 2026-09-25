@@ -37,46 +37,45 @@ export function FiltersSidebar({
   }, [data, q]);
 
   return (
-    <aside className="glass h-fit rounded-2xl lg:sticky lg:top-24">
+    <aside className="card h-fit lg:sticky lg:top-20">
       <div className="flex items-center justify-between border-b border-line px-4 py-3">
-        <h2 className="label-tech">// Filters</h2>
+        <h2 className="text-sm font-semibold text-frost">Filters</h2>
         <button
           type="button"
           onClick={onToggleCollapse}
-          className="rounded-lg border border-line px-3 py-1 font-mono text-[11px] text-mist transition hover:border-neon-cyan/40 hover:text-frost md:hidden"
+          className="rounded-md border border-line px-2 py-1 text-xs text-mist transition hover:bg-raised md:hidden"
         >
-          {collapsed ? '[ show ]' : '[ hide ]'}
+          {collapsed ? 'Show' : 'Hide'}
         </button>
       </div>
 
       <div className={collapsed ? 'hidden md:block' : 'block'}>
-        <div className="space-y-6 px-4 py-4">
-          {/* Price */}
+        <div className="space-y-5 px-4 py-4">
           <section>
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist">Price range</h3>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-              <label className="font-mono text-[11px] text-mist">
-                MIN
+            <h3 className="text-xs font-medium uppercase tracking-wide text-subtle">Price</h3>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <label className="text-xs text-mist">
+                Min
                 <input
                   inputMode="decimal"
                   value={value.priceMin}
                   onChange={(e) => onChange({ priceMin: e.target.value.replace(/[^0-9.]/g, '') })}
                   placeholder="0"
-                  className="mt-1 w-full rounded-xl border border-line bg-void/60 px-3 py-2 font-mono text-sm text-frost placeholder:text-mist/40 outline-none transition focus:border-neon-cyan/50 focus:shadow-glow-cyan"
+                  className="input mt-1 tabular-nums"
                 />
               </label>
-              <label className="font-mono text-[11px] text-mist">
-                MAX
+              <label className="text-xs text-mist">
+                Max
                 <input
                   inputMode="decimal"
                   value={value.priceMax}
                   onChange={(e) => onChange({ priceMax: e.target.value.replace(/[^0-9.]/g, '') })}
-                  placeholder="∞"
-                  className="mt-1 w-full rounded-xl border border-line bg-void/60 px-3 py-2 font-mono text-sm text-frost placeholder:text-mist/40 outline-none transition focus:border-neon-cyan/50 focus:shadow-glow-cyan"
+                  placeholder="Any"
+                  className="input mt-1 tabular-nums"
                 />
               </label>
             </div>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-2 flex flex-wrap gap-1.5">
               {PRICE_BUCKETS.map((b) => {
                 const min = 'min' in b ? String(b.min) : '';
                 const max = 'max' in b ? String(b.max) : '';
@@ -86,10 +85,10 @@ export function FiltersSidebar({
                     key={b.label}
                     type="button"
                     onClick={() => onChange({ priceMin: min, priceMax: max })}
-                    className={`rounded-full border px-3 py-1 font-mono text-[11px] transition ${
+                    className={`rounded-md border px-2.5 py-1 text-xs transition ${
                       active
-                        ? 'border-transparent bg-neon-gradient font-semibold text-void shadow-glow-cyan'
-                        : 'border-line text-mist hover:border-neon-cyan/40 hover:text-frost'
+                        ? 'border-accent bg-accent font-medium text-void'
+                        : 'border-line text-mist hover:bg-raised hover:text-frost'
                     }`}
                   >
                     {b.label}
@@ -98,24 +97,23 @@ export function FiltersSidebar({
               })}
             </div>
             {data?.priceRange && (
-              <p className="mt-2 font-mono text-[11px] text-mist/60">
-                dataset · ${data.priceRange.min.toFixed(2)} → ${data.priceRange.max.toFixed(2)}
+              <p className="mt-2 text-xs text-subtle">
+                Range: ${data.priceRange.min.toFixed(0)} – ${data.priceRange.max.toFixed(0)}
               </p>
             )}
           </section>
 
-          {/* Brand */}
           <section className="border-t border-line pt-5">
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist">Brand</h3>
+            <h3 className="text-xs font-medium uppercase tracking-wide text-subtle">Brand</h3>
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="scan brands…"
-              className="mt-3 w-full rounded-xl border border-line bg-void/60 px-3 py-2 text-sm text-frost placeholder:font-mono placeholder:text-mist/40 outline-none transition focus:border-neon-violet/50 focus:shadow-glow-violet"
+              placeholder="Search brands…"
+              className="input mt-2"
             />
-            <div className="mt-3 max-h-56 space-y-0.5 overflow-auto pr-1">
-              {loading && <p className="font-mono text-[11px] text-mist/60">loading…</p>}
-              {error && <p className="font-mono text-[11px] text-neon-pink">{error}</p>}
+            <div className="mt-2 max-h-48 space-y-0.5 overflow-auto">
+              {loading && <p className="text-xs text-subtle">Loading…</p>}
+              {error && <p className="text-xs text-warn">{error}</p>}
               {brands.map((b) => {
                 const active = value.brand === b.name;
                 return (
@@ -123,38 +121,35 @@ export function FiltersSidebar({
                     key={b.name}
                     type="button"
                     onClick={() => onChange({ brand: active ? null : b.name })}
-                    className={`flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm transition ${
+                    className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm transition ${
                       active
-                        ? 'bg-neon-violet/15 text-neon-violet'
-                        : 'text-frost/90 hover:bg-white/[0.05] hover:text-frost'
+                        ? 'bg-raised font-medium text-frost'
+                        : 'text-mist hover:bg-raised hover:text-frost'
                     }`}
                   >
                     <span className="truncate">{b.name}</span>
-                    <span className={`ml-2 font-mono text-[11px] tabular-nums ${active ? 'text-neon-violet/80' : 'text-mist/50'}`}>
-                      {b.count}
-                    </span>
+                    <span className="ml-2 text-xs tabular-nums text-subtle">{b.count}</span>
                   </button>
                 );
               })}
               {!loading && !error && brands.length === 0 && (
-                <p className="font-mono text-[11px] text-mist/50">no match for “{q}”</p>
+                <p className="text-xs text-subtle">No brands match “{q}”</p>
               )}
             </div>
             {value.brand && (
               <button
                 type="button"
                 onClick={() => onChange({ brand: null })}
-                className="mt-2 font-mono text-[11px] text-neon-cyan underline decoration-neon-cyan/40 underline-offset-2"
+                className="mt-2 text-xs text-link hover:underline"
               >
-                × clear brand
+                Clear brand
               </button>
             )}
           </section>
 
-          {/* Category */}
           <section className="border-t border-line pt-5">
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-mist">Category</h3>
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <h3 className="text-xs font-medium uppercase tracking-wide text-subtle">Category</h3>
+            <div className="mt-2 flex flex-wrap gap-1.5">
               {(data?.categories ?? []).slice(0, 16).map((c) => {
                 const active = value.category === c.name;
                 return (
@@ -162,40 +157,41 @@ export function FiltersSidebar({
                     key={c.name}
                     type="button"
                     onClick={() => onChange({ category: active ? null : c.name })}
-                    className={`rounded-full border px-3 py-1 font-mono text-[11px] transition ${
+                    className={`rounded-md border px-2.5 py-1 text-xs transition ${
                       active
-                        ? 'border-transparent bg-neon-cyan/15 text-neon-cyan shadow-glow-cyan'
-                        : 'border-line text-mist hover:border-neon-cyan/40 hover:text-frost'
+                        ? 'border-accent bg-raised font-medium text-frost'
+                        : 'border-line text-mist hover:bg-raised hover:text-frost'
                     }`}
                   >
-                    {c.name} <span className="tabular-nums opacity-50">{c.count}</span>
+                    {c.name}{' '}
+                    <span className="tabular-nums text-subtle">{c.count}</span>
                   </button>
                 );
               })}
-              {!data && !error && <span className="font-mono text-[11px] text-mist/60">loading…</span>}
+              {!data && !error && <span className="text-xs text-subtle">Loading…</span>}
             </div>
             {value.category && (
               <button
                 type="button"
                 onClick={() => onChange({ category: null })}
-                className="mt-2 font-mono text-[11px] text-neon-cyan underline decoration-neon-cyan/40 underline-offset-2"
+                className="mt-2 text-xs text-link hover:underline"
               >
-                × clear category
+                Clear category
               </button>
             )}
           </section>
 
           <div className="flex items-center justify-between border-t border-line pt-4">
-            <p className="font-mono text-[11px] tabular-nums text-mist">
-              <span className="text-neon-cyan">{count.toLocaleString()}</span> results
+            <p className="text-xs tabular-nums text-mist">
+              <span className="font-medium text-frost">{count.toLocaleString()}</span> results
             </p>
             <button
               type="button"
               onClick={onClear}
               disabled={!hasActive}
-              className="rounded-lg border border-line px-3 py-1.5 font-mono text-[11px] font-medium text-frost transition enabled:hover:border-neon-pink/50 disabled:opacity-30"
+              className="rounded-md border border-line px-2.5 py-1 text-xs text-mist transition enabled:hover:bg-raised enabled:hover:text-frost disabled:opacity-40"
             >
-              reset
+              Reset
             </button>
           </div>
         </div>

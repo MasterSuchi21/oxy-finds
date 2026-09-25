@@ -4,33 +4,27 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
-        void: '#05070d',
-        panel: '#0b0f1a',
-        line: 'rgba(148, 163, 199, 0.14)',
-        neon: {
-          cyan: '#22d3ee',
-          violet: '#a78bfa',
-          pink: '#f472b6',
-        },
-        mist: '#8b96ab',
-        frost: '#e6edf7',
+        void: '#09090b',
+        panel: '#141414',
+        raised: '#1c1c1c',
+        line: '#2a2a2a',
+        frost: '#f5f5f5',
+        mist: '#a3a3a3',
+        subtle: '#737373',
+        accent: '#fafafa',
+        link: '#60a5fa',
+        warn: '#fbbf24',
+        success: '#4ade80',
       },
       boxShadow: {
-        'glow-cyan': '0 0 24px rgba(34, 211, 238, 0.25)',
-        'glow-violet': '0 0 24px rgba(167, 139, 250, 0.25)',
-        card: '0 8px 32px rgba(0, 0, 0, 0.45)',
+        sm: '0 1px 2px rgba(0, 0, 0, 0.4)',
+        card: '0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)',
       },
-      backgroundImage: {
-        'neon-gradient': 'linear-gradient(135deg, #22d3ee 0%, #a78bfa 55%, #f472b6 100%)',
-      },
-      animation: {
-        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'spin-slow': 'spin 14s linear infinite',
+      borderRadius: {
+        DEFAULT: '0.5rem',
       },
     },
   },

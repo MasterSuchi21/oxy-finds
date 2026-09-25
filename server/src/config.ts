@@ -26,10 +26,10 @@ export const config = {
 
   nodeEnv: process.env.NODE_ENV ?? 'development',
 
-  siteName: process.env.SITE_NAME ?? 'Kakubuy',
+  siteName: process.env.SITE_NAME ?? 'OXY FINDS',
 
   /** Shown in the client header; blank hides the banner. */
-  discountCode: process.env.DISCOUNT_CODE ?? '',
+  discountCode: process.env.DISCOUNT_CODE ?? 'OXY10',
 } as const;
 
 export type Config = typeof config;

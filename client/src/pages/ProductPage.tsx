@@ -16,13 +16,13 @@ export function ProductPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-[1320px] px-6 py-10">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="aspect-square animate-pulse rounded-[28px] bg-line" />
+          <div className="aspect-square animate-pulse rounded-xl bg-line" />
           <div className="space-y-4">
-            <div className="h-5 w-24 animate-pulse rounded bg-line" />
-            <div className="h-10 w-3/4 animate-pulse rounded bg-line" />
-            <div className="h-24 animate-pulse rounded-2xl bg-line/50" />
+            <div className="h-4 w-20 animate-pulse rounded bg-line" />
+            <div className="h-8 w-3/4 animate-pulse rounded bg-line" />
+            <div className="h-20 animate-pulse rounded-xl bg-line/50" />
           </div>
         </div>
       </div>
@@ -31,14 +31,14 @@ export function ProductPage() {
 
   if (error?.includes('404') || error?.toLowerCase().includes('not found')) {
     return (
-      <div className="mx-auto max-w-[1320px] px-6 py-20 text-center">
-        <p className="font-mono text-sm text-mist">[ 404 ]</p>
-        <p className="mt-3 font-display text-3xl font-bold text-frost">Signal lost</p>
-        <p className="mx-auto mt-3 max-w-[46ch] text-sm leading-relaxed text-mist">
+      <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
+        <p className="text-sm text-subtle">404</p>
+        <p className="mt-2 text-2xl font-semibold text-frost">Product not found</p>
+        <p className="mx-auto mt-2 max-w-md text-sm text-mist">
           That listing isn&apos;t in the index — it may have been removed from the source site.
         </p>
-        <Link to="/" className="btn-neon mt-8 no-underline">
-          ← Back to catalog
+        <Link to="/" className="btn-primary mt-6 no-underline">
+          Back to catalog
         </Link>
       </div>
     );
@@ -46,9 +46,9 @@ export function ProductPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-[640px] px-6 py-10">
-        <div className="rounded-2xl border border-neon-pink/30 bg-neon-pink/5 px-4 py-4 font-mono text-sm text-neon-pink">
-          ! fetch error: {error}
+      <div className="mx-auto max-w-lg px-4 py-10 sm:px-6">
+        <div className="card border-warn/30 bg-warn/5 px-4 py-3 text-sm text-warn">
+          Failed to load product: {error}
         </div>
       </div>
     );
@@ -61,31 +61,25 @@ export function ProductPage() {
   const shown = activeImage ?? images[0] ?? null;
 
   return (
-    <div className="mx-auto max-w-[1320px] px-6 py-8">
-      <nav className="flex items-center gap-2 font-mono text-xs text-mist" aria-label="Breadcrumb">
-        <Link to="/" className="text-neon-cyan no-underline hover:underline">
-          catalog
-        </Link>
-        <span className="text-mist/40">/</span>
-        <span className="truncate text-frost/80">{product.title}</span>
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <nav className="flex items-center gap-2 text-sm text-mist" aria-label="Breadcrumb">
+        <Link to="/" className="text-link no-underline hover:underline">Catalog</Link>
+        <span className="text-subtle">/</span>
+        <span className="truncate text-frost">{product.title}</span>
       </nav>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        {/* Images */}
         <div className="space-y-3">
-          <div className="glass relative overflow-hidden rounded-[28px] p-3">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-neon-violet/10 blur-3xl" />
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-panel">
+          <div className="card p-3">
+            <div className="aspect-square overflow-hidden rounded-lg bg-raised">
               {shown ? (
                 <img
                   src={shown}
                   alt={product.title}
-                  className="h-full w-full bg-white/95 object-contain p-3"
+                  className="h-full w-full bg-white object-contain p-3"
                 />
               ) : (
-                <div className="grid h-full place-items-center font-mono text-xs text-mist/40">
-                  NO SIGNAL
-                </div>
+                <div className="grid h-full place-items-center text-sm text-subtle">No image</div>
               )}
             </div>
           </div>
@@ -97,9 +91,9 @@ export function ProductPage() {
                   key={src}
                   type="button"
                   onClick={() => setActiveImage(src)}
-                  className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-white/95 p-1 transition ${
+                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-md border-2 bg-white p-0.5 transition ${
                     shown === src
-                      ? 'border-neon-cyan shadow-glow-cyan'
+                      ? 'border-accent'
                       : 'border-line opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -110,48 +104,46 @@ export function ProductPage() {
           )}
         </div>
 
-        {/* Details */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           <div>
             <div className="flex flex-wrap gap-1.5">
               {product.brand && (
-                <span className="rounded-full border border-neon-violet/25 bg-neon-violet/10 px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-neon-violet">
+                <span className="rounded bg-raised px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-mist">
                   {product.brand}
                 </span>
               )}
               {product.category && (
-                <span className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-mist">
+                <span className="rounded border border-line px-2 py-0.5 text-xs uppercase tracking-wide text-subtle">
                   {product.category}
                 </span>
               )}
               {product.source && (
-                <span className="rounded-full border border-neon-cyan/25 bg-neon-cyan/10 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-neon-cyan">
+                <span className="rounded border border-line px-2 py-0.5 text-xs uppercase tracking-wide text-mist">
                   {SOURCE_LABEL[product.source] ?? product.source}
                 </span>
               )}
             </div>
 
-            <h1 className="mt-4 font-display text-[32px] font-bold leading-tight tracking-tight text-frost">
+            <h1 className="mt-3 text-2xl font-semibold leading-tight tracking-tight text-frost sm:text-3xl">
               {product.title}
             </h1>
 
-            <p className="mt-3 font-display text-3xl font-bold text-gradient">
+            <p className="mt-2 text-2xl font-semibold tabular-nums text-frost">
               {formatPrice(product.price)}
             </p>
 
-            <p className="mt-4 max-w-[60ch] text-sm leading-relaxed text-mist">
-              Curated from the original marketplace listing — this storefront only points the
-              way. Prices can shift between visits; the buy button hops through our tracked
-              affiliate link on the way out.
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-mist">
+              Curated from the original marketplace listing. Prices can change between visits; the
+              buy button opens the item on Kakobuy through our tracked affiliate link.
             </p>
           </div>
 
-          <div className="glass space-y-3 rounded-2xl p-5">
+          <div className="card space-y-3 p-4">
             <a
               href={goHref(product.slug)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-neon w-full rounded-2xl py-3.5 text-base"
+              className="btn-primary w-full py-3 text-base no-underline"
             >
               Buy via Kakobuy
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -164,45 +156,41 @@ export function ProductPage() {
                 />
               </svg>
             </a>
-            <p className="text-center font-mono text-[11px] leading-relaxed text-mist/60">
-              we don&apos;t sell or ship anything — checkout happens on the marketplace via
-              kakobuy. the affiliate hop is assembled server-side; the code never touches this page.
+            <p className="text-center text-xs leading-relaxed text-subtle">
+              We don&apos;t sell or ship anything — checkout happens on the marketplace via Kakobuy.
             </p>
           </div>
 
-          <dl className="glass grid grid-cols-2 gap-4 rounded-2xl p-5 font-mono text-xs">
+          <dl className="card grid grid-cols-2 gap-4 p-4 text-xs">
             <div>
-              <dt className="uppercase tracking-[0.18em] text-mist/60">listing id</dt>
-              <dd className="mt-1 text-frost">{product.itemId ?? '—'}</dd>
+              <dt className="text-subtle">Listing ID</dt>
+              <dd className="mt-0.5 text-frost">{product.itemId ?? '—'}</dd>
             </div>
             <div>
-              <dt className="uppercase tracking-[0.18em] text-mist/60">marketplace</dt>
-              <dd className="mt-1 text-frost">{product.source ?? '—'}</dd>
+              <dt className="text-subtle">Marketplace</dt>
+              <dd className="mt-0.5 text-frost">{product.source ?? '—'}</dd>
             </div>
             <div>
-              <dt className="uppercase tracking-[0.18em] text-mist/60">slug</dt>
-              <dd className="mt-1 truncate text-frost/80">{product.slug}</dd>
+              <dt className="text-subtle">Slug</dt>
+              <dd className="mt-0.5 truncate text-mist">{product.slug}</dd>
             </div>
             <div>
-              <dt className="uppercase tracking-[0.18em] text-mist/60">clicks via /go</dt>
-              <dd className="mt-1 tabular-nums text-neon-cyan">{product.clicks}</dd>
+              <dt className="text-subtle">Clicks</dt>
+              <dd className="mt-0.5 tabular-nums text-frost">{product.clicks}</dd>
             </div>
           </dl>
 
-          <Link
-            to="/"
-            className="inline-block font-mono text-xs text-neon-cyan underline decoration-neon-cyan/40 underline-offset-2"
-          >
-            ← back to catalog
+          <Link to="/" className="text-sm text-link hover:underline">
+            ← Back to catalog
           </Link>
         </div>
       </div>
 
       {related.length > 0 && (
-        <section className="mt-14">
-          <p className="label-tech">
-            // more {product.brand ? `from ${product.brand}` : `in ${product.category ?? 'the index'}`}
-          </p>
+        <section className="mt-12">
+          <h2 className="text-sm font-semibold text-frost">
+            More {product.brand ? `from ${product.brand}` : `in ${product.category ?? 'catalog'}`}
+          </h2>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {related.slice(0, 8).map((p) => (
               <ProductCard key={p.slug} product={p} />

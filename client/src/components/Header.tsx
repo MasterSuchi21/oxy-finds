@@ -1,68 +1,96 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useMeta } from '../context/MetaContext';
+import { LogoMark } from './LogoMark';
+
+const NAV: Array<{
+  to: string;
+  label: string;
+  match: (loc: { pathname: string; search: string }) => boolean;
+}> = [
+  {
+    to: '/',
+    label: 'Home',
+    match: (l) => l.pathname === '/' && l.search === '',
+  },
+  {
+    to: '/?sort=newest',
+    label: 'Products',
+    match: (l) => l.pathname === '/' && l.search !== '' && !l.search.includes('featured=true'),
+  },
+  {
+    to: '/?featured=true',
+    label: 'Best Versions',
+    match: (l) => l.search.includes('featured=true'),
+  },
+  { to: '/how-to', label: 'How To', match: (l) => l.pathname === '/how-to' },
+  { to: '/faq', label: 'FAQ', match: (l) => l.pathname === '/faq' },
+];
 
 export function Header() {
   const { meta } = useMeta();
+  const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-void/70 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-6 px-6 py-4">
-        <Link to="/" className="group flex items-center gap-3 no-underline">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-neon-gradient text-void shadow-glow-cyan transition group-hover:shadow-glow-violet">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path
-                d="M4 17V7l8 6 8-6v10"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="leading-none">
-            <span className="block font-display text-lg font-bold tracking-tight text-frost">
-              {meta?.siteName ?? 'KAKUBUY'}
-              <span className="text-neon-cyan">.</span>
-            </span>
-            <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-[0.28em] text-mist">
-              Neural catalog
-            </span>
-          </span>
+    <header className="nav-shell">
+      <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3 sm:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-2.5 no-underline">
+          <LogoMark size={28} />
+          <span className="text-base font-semibold tracking-tight text-frost">OXYGALAXY</span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <nav className="hidden flex-1 items-center justify-center gap-0.5 lg:flex">
+          {NAV.map((item) => {
+            const active = item.match(location);
+            return (
+              <NavLink
+                key={item.label}
+                to={item.to}
+                className={`nav-link ${active ? 'nav-link-active' : ''}`}
+              >
+                {item.label}
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        <div className="ml-auto flex shrink-0 items-center gap-3">
           {meta?.discountCode && (
-            <span className="rounded-full border border-neon-cyan/30 bg-neon-cyan/10 px-3 py-1 font-mono text-xs font-medium text-neon-cyan shadow-glow-cyan">
-              {meta.discountCode}
+            <span className="hidden rounded-md border border-line bg-raised px-2.5 py-1 text-xs font-medium text-mist md:inline">
+              Code: {meta.discountCode}
             </span>
           )}
-          {meta?.affcode && (
-            <span className="hidden font-mono text-xs text-mist/70 sm:inline">
-              ref<span className="text-neon-violet">/</span>{meta.affcode}
-            </span>
-          )}
-          <span className="relative flex h-2.5 w-2.5" title="API online">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-cyan opacity-60" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-neon-cyan" />
-          </span>
+          <span
+            className="h-2 w-2 rounded-full bg-success"
+            title="API online"
+            aria-label="API online"
+          />
         </div>
       </div>
 
-      <div className="h-px w-full bg-neon-gradient opacity-40" />
+      <nav className="flex items-center gap-0.5 overflow-x-auto px-4 pb-2.5 lg:hidden">
+        {NAV.map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.to}
+            className={`nav-link shrink-0 text-xs ${item.match(location) ? 'nav-link-active' : ''}`}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
     </header>
   );
 }
 
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-panel/40">
-      <div className="mx-auto max-w-[1320px] px-6 py-8 text-center">
-        <p className="font-mono text-xs leading-relaxed text-mist">
-          PRICES SYNCED FROM THIRD-PARTY MARKETPLACES — SUBJECT TO CHANGE
+    <footer className="mt-auto border-t border-line">
+      <div className="mx-auto max-w-6xl px-4 py-8 text-center sm:px-6">
+        <p className="text-xs text-subtle">
+          OXYGALAXY — prices synced from third-party marketplaces, subject to change
         </p>
-        <p className="mx-auto mt-2 max-w-[70ch] text-sm leading-relaxed text-mist/70">
-          Outbound links carry our affiliate code; purchases made through them support this site.
-          Product imagery is served from its original host — we claim no rightsholder status.
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-mist">
+          Outbound links carry our affiliate code. Product imagery is served from its original host.
         </p>
       </div>
     </footer>
