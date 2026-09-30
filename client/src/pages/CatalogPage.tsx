@@ -9,6 +9,7 @@ import type { AppliedFilters } from '../components/FiltersSidebar';
 import { CatalogHeader } from '../components/CatalogHeader';
 import { BestVersionsIntro } from '../components/BestVersionsIntro';
 import { HomeShowcase } from '../components/HomeShowcase';
+import { Seo } from '../components/Seo';
 
 const PAGE_LIMIT = 24;
 
@@ -63,6 +64,18 @@ export function CatalogPage() {
   /** Products nav — plain catalog browse, no hero/filters/header chrome. */
   const isProductsBrowse = !isHome && !isFeatured && !hasFilters;
   const showFilters = hasFilters && !isFeatured;
+  const pageTitle = q
+    ? `Search ${q} | Oxy Finds`
+    : applied.brand
+      ? `${applied.brand} Finds | Oxy Finds`
+      : applied.category
+        ? `${applied.category} Finds | Oxy Finds`
+        : isFeatured
+          ? 'Best Versions | Oxy Finds'
+          : 'Curated Marketplace Finds | Oxy Finds';
+  const pageDescription = q
+    ? `Search curated marketplace listings for ${q} on Oxy Finds. Compare products, prices, and source marketplaces.`
+    : 'Discover curated Weidian, Taobao, and 1688 marketplace finds. Browse products, compare prices, and shop through Kakobuy.';
 
   function updateParams(patch: Record<string, string | null | undefined>) {
     const next = new URLSearchParams(searchParams);
@@ -97,6 +110,28 @@ export function CatalogPage() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
+      <Seo
+        title={pageTitle}
+        description={pageDescription}
+        path="/"
+        noindex={searchParams.toString() !== ''}
+        structuredData={
+          isHome
+            ? {
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: 'Oxy Finds',
+                url: 'https://www.kakubuy-oxy.shop/',
+                description: pageDescription,
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: 'https://www.kakubuy-oxy.shop/?q={search_term_string}',
+                  'query-input': 'required name=search_term_string',
+                },
+              }
+            : undefined
+        }
+      />
       {isHome && <HomeShowcase />}
 
       {!isHome && (
@@ -233,8 +268,12 @@ export function CatalogPage() {
                     role="list"
                     aria-label="Product results"
                   >
-                    {data.items.map((p) => (
-                      <ProductCard key={p._id} product={p} />
+                    {data.items.map((p, index) => (
+                      <ProductCard
+                        key={p._id}
+                        product={p}
+                        priority={!isHome && index === 0}
+                      />
                     ))}
                   </div>
 

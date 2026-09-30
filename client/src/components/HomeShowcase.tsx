@@ -35,8 +35,8 @@ export function HomeShowcase() {
           {!loading && items.length === 0 && (
             <p className="w-full py-12 text-sm text-mist">Featured picks loading soon — browse the full catalog.</p>
           )}
-          {items.map((p) => (
-            <ShowcaseProductCard key={p._id} product={p} />
+          {items.map((p, index) => (
+            <ShowcaseProductCard key={p._id} product={p} priority={index === 0} />
           ))}
         </div>
 

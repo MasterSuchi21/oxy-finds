@@ -9,6 +9,7 @@ import {
   faqSearchText,
   type FAQEntry,
 } from '../lib/faqData';
+import { Seo } from '../components/Seo';
 
 const ID_PREFIX = 'faq';
 const MIN_QUERY = 2;
@@ -16,16 +17,6 @@ const MIN_QUERY = 2;
 const SEARCH_INDEX: ReadonlyMap<string, string> = new Map(
   FAQ_ENTRIES.map((entry) => [entry.id, faqSearchText(entry)]),
 );
-
-const FAQ_JSON_LD = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQ_ENTRIES.map((entry) => ({
-    '@type': 'Question',
-    name: entry.question,
-    acceptedAnswer: { '@type': 'Answer', text: faqAnswerText(entry) },
-  })),
-}).replace(/</g, '\\u003c');
 
 function prefersReducedMotion(): boolean {
   return (
@@ -126,7 +117,20 @@ export function FAQPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 pb-16 sm:px-6">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
+      <Seo
+        title="Marketplace Shopping FAQ | Oxy Finds"
+        description="Answers about Oxy Finds, buying from Weidian, Taobao, and 1688, shopping agents, shipping, sizing, and product listings."
+        path="/faq"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_ENTRIES.map((entry) => ({
+            '@type': 'Question',
+            name: entry.question,
+            acceptedAnswer: { '@type': 'Answer', text: faqAnswerText(entry) },
+          })),
+        }}
+      />
 
       <div className="mb-8">
         <p className="eyebrow">FAQ</p>

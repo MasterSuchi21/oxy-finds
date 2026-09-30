@@ -3,7 +3,13 @@ import type { Product } from '../lib/api';
 import { formatPrice } from '../lib/api';
 import { goHref, productHref } from '../lib/links';
 
-export function ShowcaseProductCard({ product }: { product: Product }) {
+export function ShowcaseProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean;
+}) {
   return (
     <article className="showcase-card group flex min-w-[200px] max-w-[220px] flex-1 flex-col sm:min-w-[220px]">
       <Link to={productHref(product.slug)} className="block p-3">
@@ -12,7 +18,9 @@ export function ShowcaseProductCard({ product }: { product: Product }) {
             <img
               src={product.image}
               alt={product.title}
-              loading="lazy"
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'low'}
+              decoding="async"
               className="h-full w-full object-contain p-2 transition duration-300 group-hover:scale-[1.03]"
             />
           ) : (

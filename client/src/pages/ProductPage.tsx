@@ -5,6 +5,7 @@ import { formatPrice } from '../lib/api';
 import { useApi } from '../lib/useApi';
 import { productHref, goHref } from '../lib/links';
 import { ProductCard } from '../components/ProductCard';
+import { Seo } from '../components/Seo';
 
 const SOURCE_LABEL: Record<string, string> = { WD: 'Weidian', TB: 'Taobao', '1688': '1688' };
 
@@ -59,9 +60,32 @@ export function ProductPage() {
   const { product, related } = data;
   const images = product.images.length ? product.images : product.image ? [product.image] : [];
   const shown = activeImage ?? images[0] ?? null;
+  const description = `View ${product.title}${product.brand ? ` by ${product.brand}` : ''} on Oxy Finds. Compare curated marketplace listings and shop through Kakobuy.`;
+  const productStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    image: images,
+    description,
+    ...(product.brand ? { brand: { '@type': 'Brand', name: product.brand } } : {}),
+    ...(product.category ? { category: product.category } : {}),
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: product.price.toFixed(2),
+      url: `https://www.kakubuy-oxy.shop/products/${encodeURIComponent(product.slug)}`,
+    },
+  };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <Seo
+        title={`${product.title} | Oxy Finds`}
+        description={description}
+        path={`/products/${encodeURIComponent(product.slug)}`}
+        image={shown}
+        structuredData={productStructuredData}
+      />
       <nav className="flex items-center gap-2 text-sm text-mist" aria-label="Breadcrumb">
         <Link to="/" className="text-link no-underline hover:underline">Catalog</Link>
         <span className="text-subtle">/</span>
@@ -76,6 +100,9 @@ export function ProductPage() {
                 <img
                   src={shown}
                   alt={product.title}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="h-full w-full bg-white object-contain p-3"
                 />
               ) : (
@@ -97,7 +124,13 @@ export function ProductPage() {
                       : 'border-line opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={src} alt="" className="h-full w-full object-contain" />
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-contain"
+                  />
                 </button>
               ))}
             </div>

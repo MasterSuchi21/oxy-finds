@@ -5,7 +5,13 @@ import { productHref, goHref } from '../lib/links';
 
 const SOURCE_LABEL: Record<string, string> = { WD: 'Weidian', TB: 'Taobao', '1688': '1688' };
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean;
+}) {
   return (
     <article className="group card card-hover flex flex-col overflow-hidden">
       <Link to={productHref(product.slug)} className="block p-3 pb-0">
@@ -14,7 +20,9 @@ export function ProductCard({ product }: { product: Product }) {
             <img
               src={product.image}
               alt={product.title}
-              loading="lazy"
+              loading={priority ? 'eager' : 'lazy'}
+              fetchPriority={priority ? 'high' : 'low'}
+              decoding="async"
               className="h-full w-full object-contain p-3 transition duration-200 group-hover:scale-[1.02]"
             />
           ) : (

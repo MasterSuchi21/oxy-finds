@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HowToNav, ReadingProgressBar, type TocEntry } from '../components/HowToNav';
 import { StepCard, Callout, Term } from '../components/StepCard';
+import { Seo } from '../components/Seo';
 
 /**
  * Section registry. Ids are semantic rather than positional so deep links stay
@@ -88,6 +89,11 @@ export function HowToPage() {
 
   return (
     <>
+      <Seo
+        title="How to Buy from Chinese Marketplaces | Oxy Finds"
+        description="Learn how to order from Weidian, Taobao, and 1688 using a shopping agent, from finding an item to QC photos and international shipping."
+        path="/how-to"
+      />
       <ReadingProgressBar />
 
       <div className="mx-auto max-w-[1200px] px-6 py-12 pb-20">
