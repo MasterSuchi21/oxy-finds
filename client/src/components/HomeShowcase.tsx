@@ -20,7 +20,7 @@ export function HomeShowcase() {
   return (
     <section className="showcase-shell animate-fade-up text-center">
       <p className="font-display text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
-        <span className="text-brand-gradient">XYFINDS</span>
+        <span className="text-brand-gradient">OXYFINDS</span>
       </p>
       <p className="mt-4 font-display text-lg font-bold tracking-wide text-frost sm:text-xl">
         CODE: {promo} <span className="text-brand">25$ OFF</span>
