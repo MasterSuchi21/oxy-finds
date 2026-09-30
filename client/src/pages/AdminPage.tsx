@@ -9,12 +9,27 @@ function countryLabel(code: string): string {
   return code.toUpperCase();
 }
 
-function countryFlag(code: string): string {
+function countryFlagUrl(code: string): string | null {
   const normalized = code.toUpperCase();
-  if (normalized === 'LOCAL') return '🖥️';
-  if (normalized === 'XX' || !/^[A-Z]{2}$/.test(normalized)) return '🌐';
-  return String.fromCodePoint(
-    ...Array.from(normalized, (letter) => letter.codePointAt(0)! + 127397),
+  if (!/^[A-Z]{2}$/.test(normalized) || normalized === 'XX') return null;
+  return `https://flagcdn.com/w40/${normalized.toLowerCase()}.png`;
+}
+
+function CountryFlag({ code }: { code: string }) {
+  const src = countryFlagUrl(code);
+  if (!src) return null;
+
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
+      width={20}
+      height={15}
+      loading="lazy"
+      decoding="async"
+      className="mr-2 inline-block h-[15px] w-5 rounded-[2px] object-cover align-[-2px]"
+    />
   );
 }
 
@@ -135,7 +150,7 @@ export function AdminPage() {
             {stats.byCountry.map((row) => (
               <tr key={row.country} className="border-b border-line/50 last:border-0">
                 <td className="px-4 py-2.5 font-medium text-frost">
-                  <span className="mr-2" aria-hidden="true">{countryFlag(row.country)}</span>
+                  <CountryFlag code={row.country} />
                   {countryLabel(row.country)}
                 </td>
                 <td className="px-4 py-2.5 tabular-nums text-mist">{row.uniqueVisitors}</td>
@@ -159,7 +174,7 @@ export function AdminPage() {
           {stats.recent.map((v) => (
             <li key={v._id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-sm">
               <span className="rounded-md bg-raised px-2 py-0.5 font-medium text-brand">
-                <span className="mr-1.5" aria-hidden="true">{countryFlag(v.country)}</span>
+                <CountryFlag code={v.country} />
                 {countryLabel(v.country)}
               </span>
               <span className="text-mist">{v.path}</span>
