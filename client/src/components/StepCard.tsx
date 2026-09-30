@@ -19,7 +19,7 @@ export function StepCard({ id, step, of, title, timing, children }: StepCardProp
       <div className="flex items-start gap-3">
         <span
           aria-hidden
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-raised text-sm font-semibold tabular-nums text-frost"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-brand-gradient text-sm font-bold tabular-nums text-void"
         >
           {step}
         </span>

@@ -170,5 +170,7 @@ metaRouter.get('/', (_req, res) => {
     affcode: config.affcode,
     siteName: config.siteName,
     discountCode: config.discountCode,
+    promoCode: config.promoCode,
+    signupUrl: `${config.kakobuyRegisterUrl}?affcode=${encodeURIComponent(config.affcode)}`,
   });
 });

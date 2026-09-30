@@ -130,11 +130,11 @@ export function FAQPage() {
 
       <div className="mb-8">
         <p className="eyebrow">FAQ</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-frost sm:text-4xl">
-          Common questions
+        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-frost sm:text-4xl">
+          Common <span className="text-brand-gradient">questions</span>
         </h1>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-mist">
-          {FAQ_ENTRIES.length} answers about how OXYGALAXY works, agent fees, shipping, sizing, and
+          {FAQ_ENTRIES.length} answers about how Oxy Finds works, agent fees, shipping, sizing, and
           ordering from Chinese marketplaces.
         </p>
       </div>

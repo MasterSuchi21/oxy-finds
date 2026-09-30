@@ -3,10 +3,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { productsRouter, metaRouter } from './routes/products.js';
+import { analyticsRouter } from './routes/analytics.js';
+import { adminRouter } from './routes/admin.js';
 import { config } from './config.js';
 
 export function createApp() {
   const app = express();
+  app.set('trust proxy', 1);
 
   // Images are served from a third-party host, so allow cross-origin images.
   app.use(
@@ -25,6 +28,8 @@ export function createApp() {
 
   app.use('/api/products', productsRouter);
   app.use('/api/meta', metaRouter);
+  app.use('/api/analytics', analyticsRouter);
+  app.use('/api/admin', adminRouter);
 
   app.use((_req, res) => {
     res.status(404).json({ error: 'Not found' });

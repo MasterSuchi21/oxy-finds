@@ -87,7 +87,7 @@ export function ReadingProgressBar() {
   return (
     <div className="pointer-events-none fixed left-0 right-0 top-0 z-50 h-0.5 bg-line" aria-hidden>
       <div
-        className="h-full bg-accent transition-[width] duration-150 ease-out"
+        className="h-full bg-brand-gradient transition-[width] duration-150 ease-out"
         style={{ width: `${progress * 100}%` }}
       />
     </div>
@@ -134,7 +134,7 @@ export function HowToNav({ entries }: HowToNavProps) {
                 <span
                   aria-hidden
                   className={`absolute left-0 top-1 h-[calc(100%-0.5rem)] w-0.5 rounded-full ${
-                    active ? 'bg-accent' : 'bg-transparent'
+                    active ? 'bg-brand-gradient' : 'bg-transparent'
                   }`}
                   style={{ marginLeft: '-1px' }}
                 />

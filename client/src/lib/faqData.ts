@@ -65,7 +65,7 @@ export const FAQ_ENTRIES: readonly FAQEntry[] = [
   {
     id: 'what-is-oxygalaxy',
     category: 'basics',
-    question: 'What is OXYGALAXY?',
+    question: 'What is Oxy Finds?',
     answer: [
       'A searchable index of roughly 9,000 replica and budget fashion listings pulled from Weidian, Taobao, and 1688. Think of it as a front-end for marketplaces that were never designed for you to browse: the listings are already in Chinese, already domestic-only, and already impossible to search unless you know the exact product name in Mandarin.',
       'We do not sell, hold, or ship inventory. Every listing links back to the seller\'s own page, which you then hand to a freight forwarder ("agent") who buys it for you. We earn a commission when you sign up with an agent through one of our tracked links, and nothing when you do not.',

@@ -29,7 +29,15 @@ export const config = {
   siteName: process.env.SITE_NAME ?? 'OXY FINDS',
 
   /** Shown in the client header; blank hides the banner. */
-  discountCode: process.env.DISCOUNT_CODE ?? 'OXY10',
+  discountCode: process.env.DISCOUNT_CODE ?? '',
+
+  /** Protects GET /api/admin/* — set in production. */
+  adminPassword: process.env.ADMIN_PASSWORD ?? '',
+
+  /** Home promo code copy (marketing). */
+  promoCode: process.env.PROMO_CODE ?? 'OXYFINDS',
+
+  kakobuyRegisterUrl: process.env.KAKOBUY_REGISTER_URL ?? 'https://www.kakobuy.com/register',
 } as const;
 
 export type Config = typeof config;

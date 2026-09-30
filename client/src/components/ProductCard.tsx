@@ -26,7 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           )}
           {product.featured && (
-            <span className="absolute right-2 top-2 rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-void">
+            <span className="absolute right-2 top-2 rounded-md bg-brand-gradient px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-void">
               Featured
             </span>
           )}
@@ -48,7 +48,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         <Link to={productHref(product.slug)} className="no-underline">
-          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-frost transition group-hover:text-link">
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-frost transition group-hover:text-brand">
             {product.title}
           </h3>
         </Link>
@@ -59,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
             href={goHref(product.slug)}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent text-void transition hover:bg-white active:scale-95"
+            className="btn-icon h-8 w-8 shrink-0"
             aria-label={`Open ${product.title} on Kakobuy`}
             title="Buy via Kakobuy"
           >

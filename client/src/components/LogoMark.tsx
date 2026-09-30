@@ -1,17 +1,31 @@
-/** Simple static mark — no animation, no glow. */
-export function LogoMark({ size = 32 }: { size?: number }) {
+/** Oxy Finds mark — magnifying glass on brand gradient. */
+export function LogoMark({ size = 34 }: { size?: number }) {
+  const id = 'oxyfinds-grad';
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 32 32"
+      viewBox="0 0 34 34"
       fill="none"
       aria-hidden
       className="shrink-0"
     >
-      <rect width="32" height="32" rx="8" fill="#fafafa" />
-      <circle cx="16" cy="16" r="7" stroke="#09090b" strokeWidth="2.5" fill="none" />
-      <circle cx="16" cy="16" r="2.5" fill="#09090b" />
+      <defs>
+        <linearGradient id={id} x1="4" y1="4" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#22d3ee" />
+          <stop offset="1" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+      <rect width="34" height="34" rx="9" fill={`url(#${id})`} />
+      <circle cx="15" cy="15" r="6.5" stroke="white" strokeWidth="2.2" fill="none" opacity="0.95" />
+      <path
+        d="M20 20l5.5 5.5"
+        stroke="white"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        opacity="0.95"
+      />
+      <circle cx="15" cy="15" r="2" fill="white" opacity="0.9" />
     </svg>
   );
 }

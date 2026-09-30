@@ -8,6 +8,7 @@ import { FiltersSidebar } from '../components/FiltersSidebar';
 import type { AppliedFilters } from '../components/FiltersSidebar';
 import { CatalogHeader } from '../components/CatalogHeader';
 import { BestVersionsIntro } from '../components/BestVersionsIntro';
+import { HomeShowcase } from '../components/HomeShowcase';
 
 const PAGE_LIMIT = 24;
 
@@ -52,8 +53,16 @@ export function CatalogPage() {
   const sort = (searchParams.get('sort') as SortKey | null) ?? 'newest';
   const q = searchParams.get('q') ?? '';
   const isFeatured = searchParams.get('featured') === 'true';
-  const isHome =
-    !q && !applied.brand && !applied.category && !applied.priceMin && !applied.priceMax && !isFeatured;
+  const isHome = searchParams.toString() === '';
+  const hasFilters =
+    Boolean(q) ||
+    Boolean(applied.brand) ||
+    Boolean(applied.category) ||
+    Boolean(applied.priceMin) ||
+    Boolean(applied.priceMax);
+  /** Products nav — plain catalog browse, no hero/filters/header chrome. */
+  const isProductsBrowse = !isHome && !isFeatured && !hasFilters;
+  const showFilters = hasFilters && !isFeatured;
 
   function updateParams(patch: Record<string, string | null | undefined>) {
     const next = new URLSearchParams(searchParams);
@@ -88,57 +97,11 @@ export function CatalogPage() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6">
-      {isHome && (
-        <section className="card p-6 sm:p-8">
-          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-            <div>
-              <p className="eyebrow">Marketplace index</p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-frost sm:text-4xl">
-                Find the piece. Skip the noise.
-              </h1>
-              <p className="mt-4 max-w-lg text-sm leading-relaxed text-mist">
-                Thousands of listings from Weidian, Taobao and 1688 — searchable in English with
-                prices in USD. Filter by brand, trim by price, and buy through a tracked affiliate
-                link.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2 text-xs text-mist">
-                <span className="rounded-md border border-line bg-raised px-2.5 py-1">~9,000 items</span>
-                <span className="rounded-md border border-line px-2.5 py-1">WD · TB · 1688</span>
-              </div>
-            </div>
-
-            <form onSubmit={onSearchSubmit}>
-              <label className="text-xs font-medium text-mist">Search catalog</label>
-              <div className="mt-1.5 flex gap-2">
-                <input
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="Brand, item, keyword…"
-                  className="input min-w-0 flex-1"
-                />
-                <button type="submit" className="btn-primary shrink-0">Search</button>
-              </div>
-              {q && (
-                <p className="mt-2 text-xs text-mist">
-                  Filtering by <span className="font-medium text-frost">{q}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSearchInput('');
-                      updateParams({ q: null });
-                    }}
-                    className="ml-2 text-link hover:underline"
-                  >
-                    Clear
-                  </button>
-                </p>
-              )}
-            </form>
-          </div>
-        </section>
-      )}
+      {isHome && <HomeShowcase />}
 
       {!isHome && (
+        <>
+      {!isProductsBrowse && (
         <>
           <CatalogHeader
             filters={{
@@ -168,40 +131,45 @@ export function CatalogPage() {
         </>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-        <FiltersSidebar
-          value={applied}
-          onChange={(patch) =>
-            updateParams({
-              brand: patch.brand !== undefined ? patch.brand ?? null : undefined,
-              category: patch.category !== undefined ? patch.category ?? null : undefined,
-              minPrice: patch.priceMin !== undefined ? patch.priceMin || null : undefined,
-              maxPrice: patch.priceMax !== undefined ? patch.priceMax || null : undefined,
-            })
-          }
-          onClear={() => {
-            const next = new URLSearchParams(searchParams);
-            next.delete('brand');
-            next.delete('category');
-            next.delete('minPrice');
-            next.delete('maxPrice');
-            setSearchParams(next, { replace: true });
-          }}
-          count={data?.total ?? 0}
-          collapsed={filtersCollapsed}
-          onToggleCollapse={() => setFiltersCollapsed((x) => !x)}
-        />
+      <div className={showFilters ? 'grid gap-6 lg:grid-cols-[260px_1fr]' : ''}>
+        {showFilters && (
+          <FiltersSidebar
+            value={applied}
+            onChange={(patch) =>
+              updateParams({
+                brand: patch.brand !== undefined ? patch.brand ?? null : undefined,
+                category: patch.category !== undefined ? patch.category ?? null : undefined,
+                minPrice: patch.priceMin !== undefined ? patch.priceMin || null : undefined,
+                maxPrice: patch.priceMax !== undefined ? patch.priceMax || null : undefined,
+              })
+            }
+            onClear={() => {
+              const next = new URLSearchParams(searchParams);
+              next.delete('brand');
+              next.delete('category');
+              next.delete('minPrice');
+              next.delete('maxPrice');
+              setSearchParams(next, { replace: true });
+            }}
+            count={data?.total ?? 0}
+            collapsed={filtersCollapsed}
+            onToggleCollapse={() => setFiltersCollapsed((x) => !x)}
+          />
+        )}
 
         <div className="min-w-0">
           <div className="mb-4 flex min-h-[36px] flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-mist" aria-live="polite">
-              {isHome &&
+              {(isHome || isProductsBrowse) &&
                 (loading ? (
                   <span className="inline-block h-3 w-28 animate-pulse rounded bg-line" aria-hidden />
                 ) : error ? (
                   <span className="text-warn">Error loading products</span>
                 ) : (
                   <>
+                    {isProductsBrowse && (
+                      <span className="mr-2 font-display font-semibold text-frost">Products · </span>
+                    )}
                     Showing{' '}
                     <span className="tabular-nums font-medium text-frost">{data?.items.length ?? 0}</span>{' '}
                     of{' '}
@@ -222,8 +190,8 @@ export function CatalogPage() {
                   aria-pressed={sort === key}
                   className={`rounded-md border px-2.5 py-1 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link ${
                     sort === key
-                      ? 'border-accent bg-raised font-medium text-frost'
-                      : 'border-line text-mist hover:bg-raised hover:text-frost'
+                      ? 'border-brand/40 bg-brand/10 font-medium text-brand'
+                      : 'border-line text-mist hover:border-brand/20 hover:bg-raised hover:text-frost'
                   }`}
                 >
                   {SORT_LABELS[key]}
@@ -259,7 +227,9 @@ export function CatalogPage() {
               ) : (
                 <>
                   <div
-                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                    className={`grid grid-cols-1 gap-4 sm:grid-cols-2 ${
+                      isProductsBrowse ? 'lg:grid-cols-3 xl:grid-cols-4' : 'xl:grid-cols-3'
+                    }`}
                     role="list"
                     aria-label="Product results"
                   >
@@ -303,6 +273,8 @@ export function CatalogPage() {
           )}
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

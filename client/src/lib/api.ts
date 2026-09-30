@@ -50,6 +50,21 @@ export interface MetaResponse {
   affcode: string;
   siteName: string;
   discountCode: string;
+  promoCode: string;
+  signupUrl: string;
+}
+
+export interface AdminStatsResponse {
+  totalVisits: number;
+  uniqueVisitors: number;
+  byCountry: Array<{ country: string; visits: number; uniqueVisitors: number }>;
+  recent: Array<{
+    _id: string;
+    sessionId: string;
+    country: string;
+    path: string;
+    createdAt: string;
+  }>;
 }
 
 export type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'name';

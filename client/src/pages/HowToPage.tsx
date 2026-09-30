@@ -96,8 +96,9 @@ export function HowToPage() {
         {/* ---------------------------------------------------------------- */}
         <header className="mb-12 max-w-[68ch]">
           <p className="eyebrow">Guide</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-frost sm:text-4xl">
-            How to order from Chinese marketplaces
+          <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-frost sm:text-4xl">
+            How to order from{' '}
+            <span className="text-brand-gradient">Chinese marketplaces</span>
           </h1>
           <p className="mt-5 text-[16px] leading-relaxed text-mist">
             Weidian, Taobao and 1688 sell to buyers inside China only. To order from anywhere else
@@ -145,7 +146,7 @@ export function HowToPage() {
                 into one parcel.
               </p>
               <p className="mt-3 text-[15px] leading-relaxed text-mist">
-                OXYGALAXY is the catalogue layer in front of that. We index around 9,000 listings so
+                Oxy Finds is the catalogue layer in front of that. We index around 9,000 listings so
                 they are searchable in English with prices in USD. We do not sell, stock or ship
                 anything — every buy button hands you off to{' '}
                 <Term>Kakobuy</Term> with the item pre-filled. Whether you order is between you and

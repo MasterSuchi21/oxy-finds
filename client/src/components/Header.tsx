@@ -1,6 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { useMeta } from '../context/MetaContext';
-import { LogoMark } from './LogoMark';
+import { Logo } from './Logo';
 
 const NAV: Array<{
   to: string;
@@ -27,15 +26,13 @@ const NAV: Array<{
 ];
 
 export function Header() {
-  const { meta } = useMeta();
   const location = useLocation();
 
   return (
     <header className="nav-shell">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3 sm:px-6">
-        <Link to="/" className="flex shrink-0 items-center gap-2.5 no-underline">
-          <LogoMark size={28} />
-          <span className="text-base font-semibold tracking-tight text-frost">OXYGALAXY</span>
+        <Link to="/" className="shrink-0 no-underline transition-opacity hover:opacity-90">
+          <Logo />
         </Link>
 
         <nav className="hidden flex-1 items-center justify-center gap-0.5 lg:flex">
@@ -54,16 +51,14 @@ export function Header() {
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
-          {meta?.discountCode && (
-            <span className="hidden rounded-md border border-line bg-raised px-2.5 py-1 text-xs font-medium text-mist md:inline">
-              Code: {meta.discountCode}
-            </span>
-          )}
           <span
-            className="h-2 w-2 rounded-full bg-success"
+            className="relative flex h-2 w-2"
             title="API online"
             aria-label="API online"
-          />
+          >
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-50" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+          </span>
         </div>
       </div>
 
@@ -84,10 +79,10 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-line">
+    <footer className="mt-auto border-t border-line/60">
       <div className="mx-auto max-w-6xl px-4 py-8 text-center sm:px-6">
         <p className="text-xs text-subtle">
-          OXYGALAXY — prices synced from third-party marketplaces, subject to change
+          Oxy Finds — prices synced from third-party marketplaces, subject to change
         </p>
         <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-mist">
           Outbound links carry our affiliate code. Product imagery is served from its original host.
