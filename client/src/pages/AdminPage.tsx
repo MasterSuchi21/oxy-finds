@@ -6,7 +6,16 @@ const STORAGE_KEY = 'oxyfinds_admin_key';
 function countryLabel(code: string): string {
   if (code === 'LOCAL') return 'Local / dev';
   if (code === 'XX') return 'Unknown';
-  return code;
+  return code.toUpperCase();
+}
+
+function countryFlag(code: string): string {
+  const normalized = code.toUpperCase();
+  if (normalized === 'LOCAL') return '🖥️';
+  if (normalized === 'XX' || !/^[A-Z]{2}$/.test(normalized)) return '🌐';
+  return String.fromCodePoint(
+    ...Array.from(normalized, (letter) => letter.codePointAt(0)! + 127397),
+  );
 }
 
 export function AdminPage() {
@@ -125,7 +134,10 @@ export function AdminPage() {
           <tbody>
             {stats.byCountry.map((row) => (
               <tr key={row.country} className="border-b border-line/50 last:border-0">
-                <td className="px-4 py-2.5 font-medium text-frost">{countryLabel(row.country)}</td>
+                <td className="px-4 py-2.5 font-medium text-frost">
+                  <span className="mr-2" aria-hidden="true">{countryFlag(row.country)}</span>
+                  {countryLabel(row.country)}
+                </td>
                 <td className="px-4 py-2.5 tabular-nums text-mist">{row.uniqueVisitors}</td>
                 <td className="px-4 py-2.5 tabular-nums text-mist">{row.visits}</td>
               </tr>
@@ -147,6 +159,7 @@ export function AdminPage() {
           {stats.recent.map((v) => (
             <li key={v._id} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-sm">
               <span className="rounded-md bg-raised px-2 py-0.5 font-medium text-brand">
+                <span className="mr-1.5" aria-hidden="true">{countryFlag(v.country)}</span>
                 {countryLabel(v.country)}
               </span>
               <span className="text-mist">{v.path}</span>
