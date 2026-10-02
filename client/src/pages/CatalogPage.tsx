@@ -9,6 +9,7 @@ import type { AppliedFilters } from '../components/FiltersSidebar';
 import { CatalogHeader } from '../components/CatalogHeader';
 import { BestVersionsIntro } from '../components/BestVersionsIntro';
 import { HomeShowcase } from '../components/HomeShowcase';
+import { ProductCategoryCloud } from '../components/ProductCategoryCloud';
 import { Seo } from '../components/Seo';
 
 const PAGE_LIMIT = 24;
@@ -136,6 +137,8 @@ export function CatalogPage() {
 
       {!isHome && (
         <>
+      {isProductsBrowse && <ProductCategoryCloud activeCategory={applied.category} />}
+
       {!isProductsBrowse && (
         <>
           <CatalogHeader
