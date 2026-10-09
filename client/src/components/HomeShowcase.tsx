@@ -68,6 +68,22 @@ export function HomeShowcase() {
           How to order
         </Link>
       </div>
+
+      <div className="mx-auto mt-12 max-w-4xl">
+        <h2 className="font-display text-xl font-bold text-frost sm:text-2xl">
+          Watch the tutorial
+        </h2>
+        <video
+          className="mt-4 aspect-video w-full rounded-2xl border border-line bg-black shadow-xl"
+          controls
+          playsInline
+          preload="metadata"
+          aria-label="Oxy Finds tutorial video"
+        >
+          <source src="/1.mp4" type="video/mp4" />
+          Your browser does not support HTML video.
+        </video>
+      </div>
     </section>
   );
 }

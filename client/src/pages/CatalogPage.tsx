@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import type { ProductsResponse, SortKey } from '../lib/api';
 import { SORT_KEYS, buildProductsQuery } from '../lib/api';
 import { useApi } from '../lib/useApi';
@@ -22,6 +22,7 @@ const SORT_LABELS: Record<SortKey, string> = {
 };
 
 export function CatalogPage() {
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersCollapsed, setFiltersCollapsed] = useState(false);
   const [searchInput, setSearchInput] = useState(() => searchParams.get('q') ?? '');
@@ -55,7 +56,7 @@ export function CatalogPage() {
   const sort = (searchParams.get('sort') as SortKey | null) ?? 'newest';
   const q = searchParams.get('q') ?? '';
   const isFeatured = searchParams.get('featured') === 'true';
-  const isHome = searchParams.toString() === '';
+  const isHome = location.pathname === '/' && searchParams.toString() === '';
   const hasFilters =
     Boolean(q) ||
     Boolean(applied.brand) ||
@@ -63,7 +64,7 @@ export function CatalogPage() {
     Boolean(applied.priceMin) ||
     Boolean(applied.priceMax);
   /** Products nav — plain catalog browse, no hero/filters/header chrome. */
-  const isProductsBrowse = !isHome && !isFeatured && !hasFilters;
+  const isProductsBrowse = location.pathname === '/spreadsheet' && !isFeatured && !hasFilters;
   const showFilters = hasFilters && !isFeatured;
   const pageTitle = q
     ? `Search ${q} | Oxy Finds`
@@ -73,7 +74,9 @@ export function CatalogPage() {
         ? `${applied.category} Finds | Oxy Finds`
         : isFeatured
           ? 'Best Versions | Oxy Finds'
-          : 'Kakobuy Spreadsheet over 15.000 Curated Items';
+          : isProductsBrowse
+            ? 'Kakobuy Spreadsheet over 15.000 Curated Items'
+            : 'Oxy Finds | Curated Marketplace Finds';
   const pageDescription = q
     ? `Search curated marketplace listings for ${q} on Oxy Finds. Compare products, prices, and source marketplaces.`
     : 'Discover curated Weidian, Taobao, and 1688 marketplace finds. Browse products, compare prices, and shop through Kakobuy.';
@@ -114,7 +117,7 @@ export function CatalogPage() {
       <Seo
         title={pageTitle}
         description={pageDescription}
-        path="/spreadsheet"
+        path={isHome ? '/' : '/spreadsheet'}
         noindex={searchParams.toString() !== ''}
         structuredData={
           isHome
@@ -122,7 +125,7 @@ export function CatalogPage() {
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
                 name: 'Oxy Finds',
-                url: 'https://www.kakobuy-oxy.com/spreadsheet',
+                url: 'https://www.kakobuy-oxy.com/',
                 description: pageDescription,
                 potentialAction: {
                   '@type': 'SearchAction',
