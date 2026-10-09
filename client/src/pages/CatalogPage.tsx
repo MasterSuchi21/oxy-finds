@@ -49,7 +49,7 @@ export function CatalogPage() {
   });
 
   const url = `/api/products?${query}`;
-  const { data, loading, error } = useApi<ProductsResponse>(url, [query]);
+  const { data, loading, error, reload } = useApi<ProductsResponse>(url, [query]);
 
   const page = Math.max(1, Number(searchParams.get('page') ?? '1') || 1);
   const sort = (searchParams.get('sort') as SortKey | null) ?? 'newest';
@@ -251,6 +251,9 @@ export function CatalogPage() {
             <div className="card p-8 text-center">
               <p className="text-sm font-medium text-warn">Failed to load products</p>
               <p className="mt-1 text-sm text-mist">{String(error)}</p>
+              <button type="button" onClick={reload} className="btn-secondary mt-4">
+                Try again
+              </button>
             </div>
           )}
 

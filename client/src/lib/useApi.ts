@@ -1,5 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 
+async function responseError(res: Response): Promise<Error> {
+  const contentType = res.headers.get('content-type') ?? '';
+  if (contentType.includes('application/json')) {
+    try {
+      const body: unknown = await res.json();
+      if (
+        body !== null &&
+        typeof body === 'object' &&
+        'error' in body &&
+        typeof body.error === 'string'
+      ) {
+        return new Error(body.error);
+      }
+    } catch {
+      // Fall through to a concise status message for malformed error responses.
+    }
+  }
+
+  if (res.status >= 500) {
+    return new Error(
+      `API service is temporarily unavailable (HTTP ${res.status}). Please try again shortly.`,
+    );
+  }
+
+  return new Error(`Request failed (HTTP ${res.status} ${res.statusText}).`);
+}
+
 /**
  * Fetch hook that ties its lifetime to the requesting component.
  *
@@ -30,18 +57,28 @@ export function useApi<T>(url: string, deps: unknown[] = []): {
       try {
         const res = await fetch(url, { signal: ctrl.signal });
         if (!res.ok) {
-          const text = await res.text().catch(() => '');
           if (!live || generation !== generationRef.current) return;
-          throw new Error(text || `${res.status} ${res.statusText}`);
+          throw await responseError(res);
         }
-        const json = (await res.json()) as T;
+        let json: T;
+        try {
+          json = (await res.json()) as T;
+        } catch {
+          throw new Error('API service returned an invalid response. Please try again.');
+        }
         if (!live || generation !== generationRef.current) return;
         setData(json);
         setError(null);
       } catch (err) {
         if (!live || generation !== generationRef.current) return;
         if (err instanceof DOMException && err.name === 'AbortError') return;
-        setError(err instanceof Error ? err.message : String(err));
+        setError(
+          err instanceof TypeError
+            ? 'Unable to reach the API service. Check your connection and try again.'
+            : err instanceof Error
+              ? err.message
+              : String(err),
+        );
       } finally {
         if (live && generation === generationRef.current) setLoading(false);
       }
