@@ -73,7 +73,7 @@ export function CatalogPage() {
         ? `${applied.category} Finds | Oxy Finds`
         : isFeatured
           ? 'Best Versions | Oxy Finds'
-          : 'Curated Marketplace Finds | Oxy Finds';
+          : 'Kakobuy Spreadsheet over 15.000 Curated Items';
   const pageDescription = q
     ? `Search curated marketplace listings for ${q} on Oxy Finds. Compare products, prices, and source marketplaces.`
     : 'Discover curated Weidian, Taobao, and 1688 marketplace finds. Browse products, compare prices, and shop through Kakobuy.';
