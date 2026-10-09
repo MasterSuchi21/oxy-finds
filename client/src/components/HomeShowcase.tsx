@@ -19,11 +19,55 @@ export function HomeShowcase() {
 
   return (
     <section className="showcase-shell animate-fade-up text-center">
-      <p className="font-display text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
-        <span className="text-brand-gradient">OXYFINDS</span>
-      </p>
-      <p className="mt-4 font-display text-lg font-bold tracking-wide text-frost sm:text-xl">
-        CODE: {promo} <span className="text-brand">25$ OFF</span>
+      <div className="mx-auto grid max-w-6xl items-center gap-8 text-left lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="text-center lg:text-left">
+          <p className="font-display text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
+            <span className="text-brand-gradient">OXYFINDS</span>
+          </p>
+          <p className="mt-4 font-display text-lg font-bold tracking-wide text-frost sm:text-xl">
+            CODE: {promo} <span className="text-brand">25$ OFF</span>
+          </p>
+          <h1 className="mt-6 font-display text-2xl font-bold text-frost sm:text-3xl">
+            Watch the tutorial
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-mist sm:text-base">
+            See how to browse curated finds and shop through Kakobuy.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <Link to="/spreadsheet?sort=newest" className="btn-primary no-underline">
+              Browse all products
+            </Link>
+            <Link to="/how-to" className="btn-secondary no-underline">
+              How to order
+            </Link>
+          </div>
+          <a
+            href={signupUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="showcase-coupon mt-6 inline-block no-underline"
+          >
+            Sign up for 525$ coupons
+          </a>
+        </div>
+
+        <div className="showcase-frame relative mx-auto w-full max-w-5xl px-2 sm:px-4">
+          <video
+            className="aspect-video w-full rounded-xl bg-black"
+            controls
+            playsInline
+            preload="none"
+            poster="/tutorial-poster.jpg"
+            aria-label="Oxy Finds tutorial video"
+          >
+            <source src="/1.mp4" type="video/mp4" />
+            Your browser does not support HTML video.
+          </video>
+        </div>
+      </div>
+
+      <p className="mt-12 font-display text-xl font-bold uppercase tracking-wide text-brand-gradient sm:text-2xl">
+        Level up your rep game here
       </p>
 
       <div className="showcase-frame relative mx-auto mt-8 max-w-5xl px-2 sm:px-4">
@@ -47,43 +91,6 @@ export function HomeShowcase() {
         </div>
       </div>
 
-      <p className="mt-10 font-display text-xl font-bold uppercase tracking-wide text-brand-gradient sm:text-2xl">
-        Level up your rep game here
-      </p>
-
-      <a
-        href={signupUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="showcase-coupon mt-6 inline-block no-underline"
-      >
-        Sign up for 525$ coupons
-      </a>
-
-      <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-        <Link to="/spreadsheet?sort=newest" className="btn-primary no-underline">
-          Browse all products
-        </Link>
-        <Link to="/how-to" className="btn-secondary no-underline">
-          How to order
-        </Link>
-      </div>
-
-      <div className="mx-auto mt-12 max-w-4xl">
-        <h2 className="font-display text-xl font-bold text-frost sm:text-2xl">
-          Watch the tutorial
-        </h2>
-        <video
-          className="mt-4 aspect-video w-full rounded-2xl border border-line bg-black shadow-xl"
-          controls
-          playsInline
-          preload="metadata"
-          aria-label="Oxy Finds tutorial video"
-        >
-          <source src="/1.mp4" type="video/mp4" />
-          Your browser does not support HTML video.
-        </video>
-      </div>
     </section>
   );
 }
