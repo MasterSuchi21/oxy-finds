@@ -17,41 +17,65 @@ export function ProductPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="aspect-square animate-pulse rounded-xl bg-line" />
-          <div className="space-y-4">
-            <div className="h-4 w-20 animate-pulse rounded bg-line" />
-            <div className="h-8 w-3/4 animate-pulse rounded bg-line" />
-            <div className="h-20 animate-pulse rounded-xl bg-line/50" />
+      <>
+        <Seo
+          title="Loading Product | Oxy Finds"
+          description="Loading a curated marketplace product listing on Oxy Finds."
+          path={`/products/${encodeURIComponent(id)}`}
+          noindex
+        />
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <div className="aspect-square animate-pulse rounded-xl bg-line" />
+            <div className="space-y-4">
+              <div className="h-4 w-20 animate-pulse rounded bg-line" />
+              <div className="h-8 w-3/4 animate-pulse rounded bg-line" />
+              <div className="h-20 animate-pulse rounded-xl bg-line/50" />
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (error?.includes('404') || error?.toLowerCase().includes('not found')) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-        <p className="text-sm text-subtle">404</p>
-        <p className="mt-2 text-2xl font-semibold text-frost">Product not found</p>
-        <p className="mx-auto mt-2 max-w-md text-sm text-mist">
-          That listing isn&apos;t in the index — it may have been removed from the source site.
-        </p>
-        <Link to="/" className="btn-primary mt-6 no-underline">
-          Back to catalog
-        </Link>
-      </div>
+      <>
+        <Seo
+          title="Product Not Found | Oxy Finds"
+          description="This product listing could not be found on Oxy Finds."
+          path={`/products/${encodeURIComponent(id)}`}
+          noindex
+        />
+        <div className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
+          <p className="text-sm text-subtle">404</p>
+          <p className="mt-2 text-2xl font-semibold text-frost">Product not found</p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-mist">
+            That listing isn&apos;t in the index — it may have been removed from the source site.
+          </p>
+          <Link to="/" className="btn-primary mt-6 no-underline">
+            Back to catalog
+          </Link>
+        </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-10 sm:px-6">
-        <div className="card border-warn/30 bg-warn/5 px-4 py-3 text-sm text-warn">
-          Failed to load product: {error}
+      <>
+        <Seo
+          title="Product Unavailable | Oxy Finds"
+          description="This product listing could not be loaded from Oxy Finds."
+          path={`/products/${encodeURIComponent(id)}`}
+          noindex
+        />
+        <div className="mx-auto max-w-lg px-4 py-10 sm:px-6">
+          <div className="card border-warn/30 bg-warn/5 px-4 py-3 text-sm text-warn">
+            Failed to load product: {error}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 

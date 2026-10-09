@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { AdminStatsResponse } from '../lib/api';
+import { Seo } from '../components/Seo';
 
 const STORAGE_KEY = 'oxyfinds_admin_key';
 
@@ -81,31 +82,46 @@ export function AdminPage() {
 
   if (!key || !stats) {
     return (
-      <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
-        <h1 className="font-display text-2xl font-bold text-frost">Admin</h1>
-        <p className="mt-2 text-sm text-mist">Visitor counts and country breakdown.</p>
-        <form onSubmit={onLogin} className="card mt-6 space-y-4 p-5">
-          <label className="block text-sm text-mist">
-            Admin password
-            <input
-              type="password"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="input mt-1.5"
-              autoComplete="current-password"
-            />
-          </label>
-          {error && <p className="text-sm text-warn">{error}</p>}
-          <button type="submit" className="btn-primary w-full" disabled={loading || !input.trim()}>
-            {loading ? 'Loading…' : 'Sign in'}
-          </button>
-        </form>
-      </div>
+      <>
+        <Seo
+          title="Admin Dashboard | Oxy Finds"
+          description="Oxy Finds visitor statistics and country breakdown."
+          path="/admin"
+          noindex
+        />
+        <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
+          <h1 className="font-display text-2xl font-bold text-frost">Admin</h1>
+          <p className="mt-2 text-sm text-mist">Visitor counts and country breakdown.</p>
+          <form onSubmit={onLogin} className="card mt-6 space-y-4 p-5">
+            <label className="block text-sm text-mist">
+              Admin password
+              <input
+                type="password"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                className="input mt-1.5"
+                autoComplete="current-password"
+              />
+            </label>
+            {error && <p className="text-sm text-warn">{error}</p>}
+            <button type="submit" className="btn-primary w-full" disabled={loading || !input.trim()}>
+              {loading ? 'Loading…' : 'Sign in'}
+            </button>
+          </form>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+    <>
+      <Seo
+        title="Admin Dashboard | Oxy Finds"
+        description="Oxy Finds visitor statistics and country breakdown."
+        path="/admin"
+        noindex
+      />
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-frost">Visitor dashboard</h1>
@@ -185,6 +201,7 @@ export function AdminPage() {
           ))}
         </ul>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

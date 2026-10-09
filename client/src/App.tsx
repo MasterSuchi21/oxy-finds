@@ -8,16 +8,25 @@ import { FAQPage } from './pages/FAQPage';
 import { HowToPage } from './pages/HowToPage';
 import { AdminPage } from './pages/AdminPage';
 import { VisitTracker } from './components/VisitTracker';
+import { Seo } from './components/Seo';
 
 function NotFound() {
   return (
-    <div className="mx-auto max-w-lg px-4 py-24 text-center sm:px-6">
-      <p className="text-sm text-subtle">404</p>
-      <p className="mt-2 font-display text-2xl font-bold text-frost">Page not found</p>
-      <a href="/" className="btn-primary mt-6 no-underline">
-        Back to catalog
-      </a>
-    </div>
+    <>
+      <Seo
+        title="Page Not Found | Oxy Finds"
+        description="The page you requested could not be found on Oxy Finds."
+        path={window.location.pathname}
+        noindex
+      />
+      <div className="mx-auto max-w-lg px-4 py-24 text-center sm:px-6">
+        <p className="text-sm text-subtle">404</p>
+        <p className="mt-2 font-display text-2xl font-bold text-frost">Page not found</p>
+        <a href="/" className="btn-primary mt-6 no-underline">
+          Back to catalog
+        </a>
+      </div>
+    </>
   );
 }
 
