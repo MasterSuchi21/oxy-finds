@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://www.kakubuy-oxy.shop/sitemap.xml
+Sitemap: https://www.kakobuy-oxy.com/sitemap.xml

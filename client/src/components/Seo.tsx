@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SITE_URL = 'https://www.kakubuy-oxy.shop';
+const SITE_URL = 'https://www.kakobuy-oxy.com';
 
 type SeoProps = {
   title: string;

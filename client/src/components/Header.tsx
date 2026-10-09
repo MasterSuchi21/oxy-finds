@@ -7,17 +7,18 @@ const NAV: Array<{
   match: (loc: { pathname: string; search: string }) => boolean;
 }> = [
   {
-    to: '/',
+    to: '/spreadsheet',
     label: 'Home',
-    match: (l) => l.pathname === '/' && l.search === '',
+    match: (l) => l.pathname === '/spreadsheet' && l.search === '',
   },
   {
-    to: '/?sort=newest',
+    to: '/spreadsheet?sort=newest',
     label: 'Products',
-    match: (l) => l.pathname === '/' && l.search !== '' && !l.search.includes('featured=true'),
+    match: (l) =>
+      l.pathname === '/spreadsheet' && l.search !== '' && !l.search.includes('featured=true'),
   },
   {
-    to: '/?featured=true',
+    to: '/spreadsheet?featured=true',
     label: 'Best Versions',
     match: (l) => l.search.includes('featured=true'),
   },
@@ -31,7 +32,7 @@ export function Header() {
   return (
     <header className="nav-shell">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3 sm:px-6">
-        <Link to="/" className="shrink-0 no-underline transition-opacity hover:opacity-90">
+        <Link to="/spreadsheet" className="shrink-0 no-underline transition-opacity hover:opacity-90">
           <Logo />
         </Link>
 

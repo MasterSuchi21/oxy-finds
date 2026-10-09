@@ -41,7 +41,7 @@ export function HomeShowcase() {
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 flex -translate-y-1/2 justify-center">
-          <Link to="/?featured=true" className="showcase-view-all pointer-events-auto no-underline">
+          <Link to="/spreadsheet?featured=true" className="showcase-view-all pointer-events-auto no-underline">
             View all
           </Link>
         </div>
@@ -61,7 +61,7 @@ export function HomeShowcase() {
       </a>
 
       <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-        <Link to="/?sort=newest" className="btn-primary no-underline">
+        <Link to="/spreadsheet?sort=newest" className="btn-primary no-underline">
           Browse all products
         </Link>
         <Link to="/how-to" className="btn-secondary no-underline">

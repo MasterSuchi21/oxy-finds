@@ -114,7 +114,7 @@ export function CatalogPage() {
       <Seo
         title={pageTitle}
         description={pageDescription}
-        path="/"
+        path="/spreadsheet"
         noindex={searchParams.toString() !== ''}
         structuredData={
           isHome
@@ -122,11 +122,11 @@ export function CatalogPage() {
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
                 name: 'Oxy Finds',
-                url: 'https://www.kakubuy-oxy.shop/',
+                url: 'https://www.kakobuy-oxy.com/spreadsheet',
                 description: pageDescription,
                 potentialAction: {
                   '@type': 'SearchAction',
-                  target: 'https://www.kakubuy-oxy.shop/?q={search_term_string}',
+                  target: 'https://www.kakobuy-oxy.com/spreadsheet?q={search_term_string}',
                   'query-input': 'required name=search_term_string',
                 },
               }

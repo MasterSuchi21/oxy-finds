@@ -6,8 +6,8 @@ import { useApi } from '../lib/useApi';
 const COLLAPSED_COUNT = 18;
 
 const QUICK_LINKS = [
-  { label: '!Best Batches', to: '/?featured=true' },
-  { label: '!Bought', to: '/?sort=newest' },
+  { label: '!Best Batches', to: '/spreadsheet?featured=true' },
+  { label: '!Bought', to: '/spreadsheet?sort=newest' },
 ] as const;
 
 export function ProductCategoryCloud({

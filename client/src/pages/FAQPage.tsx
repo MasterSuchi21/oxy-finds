@@ -269,7 +269,7 @@ export function FAQPage() {
           </a>{' '}
           for community advice.
         </p>
-        <Link to="/?sort=newest" className="btn-primary mt-5 inline-block no-underline">
+        <Link to="/spreadsheet?sort=newest" className="btn-primary mt-5 inline-block no-underline">
           Browse catalog
         </Link>
       </div>

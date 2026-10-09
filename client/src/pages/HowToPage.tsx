@@ -183,7 +183,7 @@ export function HowToPage() {
             {/* ------------------------------------------------------------ */}
             <StepCard id="find-item" step={1} of={TOTAL_STEPS} title="Find your item" timing="~10 min">
               <p>
-                Search the <Link to="/?sort=newest" className="text-link hover:underline">catalog</Link>{' '}
+                Search the <Link to="/spreadsheet?sort=newest" className="text-link hover:underline">catalog</Link>{' '}
                 by brand or keyword, or filter down from the sidebar. Each product page shows the
                 price we recorded, the seller's images, the source marketplace and a buy button that
                 opens the item on Kakobuy.
@@ -592,7 +592,7 @@ export function HowToPage() {
                 plan for. Start with something cheap and see the pipeline through once.
               </p>
               <div className="mt-7 flex flex-wrap justify-center gap-3">
-                <Link to="/?sort=newest" className="btn-primary no-underline">
+                <Link to="/spreadsheet?sort=newest" className="btn-primary no-underline">
                   Browse the catalog →
                 </Link>
                 <Link to="/faq" className="btn-secondary no-underline">

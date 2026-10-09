@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { MetaProvider } from './context/MetaContext';
 import { Header, Footer } from './components/Header';
@@ -22,11 +22,25 @@ function NotFound() {
       <div className="mx-auto max-w-lg px-4 py-24 text-center sm:px-6">
         <p className="text-sm text-subtle">404</p>
         <p className="mt-2 font-display text-2xl font-bold text-frost">Page not found</p>
-        <a href="/" className="btn-primary mt-6 no-underline">
+        <a href="/spreadsheet" className="btn-primary mt-6 no-underline">
           Back to catalog
         </a>
       </div>
     </>
+  );
+}
+
+function LegacyCatalogRedirect() {
+  const location = useLocation();
+  return (
+    <Navigate
+      replace
+      to={{
+        pathname: '/spreadsheet',
+        search: location.search,
+        hash: location.hash,
+      }}
+    />
   );
 }
 
@@ -48,7 +62,8 @@ export function App() {
           <Header />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<CatalogPage />} />
+              <Route path="/" element={<LegacyCatalogRedirect />} />
+              <Route path="/spreadsheet" element={<CatalogPage />} />
               <Route path="/products/:slug" element={<ProductPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/how-to" element={<HowToPage />} />

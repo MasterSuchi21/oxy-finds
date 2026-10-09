@@ -53,7 +53,7 @@ export function ProductPage() {
           <p className="mx-auto mt-2 max-w-md text-sm text-mist">
             That listing isn&apos;t in the index — it may have been removed from the source site.
           </p>
-          <Link to="/" className="btn-primary mt-6 no-underline">
+          <Link to="/spreadsheet" className="btn-primary mt-6 no-underline">
             Back to catalog
           </Link>
         </div>
@@ -97,7 +97,7 @@ export function ProductPage() {
       '@type': 'Offer',
       priceCurrency: 'USD',
       price: product.price.toFixed(2),
-      url: `https://www.kakubuy-oxy.shop/products/${encodeURIComponent(product.slug)}`,
+      url: `https://www.kakobuy-oxy.com/products/${encodeURIComponent(product.slug)}`,
     },
   };
 
@@ -111,7 +111,7 @@ export function ProductPage() {
         structuredData={productStructuredData}
       />
       <nav className="flex items-center gap-2 text-sm text-mist" aria-label="Breadcrumb">
-        <Link to="/" className="text-link no-underline hover:underline">Catalog</Link>
+        <Link to="/spreadsheet" className="text-link no-underline hover:underline">Catalog</Link>
         <span className="text-subtle">/</span>
         <span className="truncate text-frost">{product.title}</span>
       </nav>
@@ -237,7 +237,7 @@ export function ProductPage() {
             </div>
           </dl>
 
-          <Link to="/" className="text-sm text-link hover:underline">
+          <Link to="/spreadsheet" className="text-sm text-link hover:underline">
             ← Back to catalog
           </Link>
         </div>
