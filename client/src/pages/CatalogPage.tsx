@@ -137,7 +137,14 @@ export function CatalogPage() {
 
       {!isHome && (
         <>
-      {isProductsBrowse && <ProductCategoryCloud activeCategory={applied.category} />}
+      {!isFeatured && (
+        <ProductCategoryCloud
+          activeCategory={applied.category}
+          onSelectCategory={(category) =>
+            updateParams({ category, sort: 'newest', page: null })
+          }
+        />
+      )}
 
       {!isProductsBrowse && (
         <>

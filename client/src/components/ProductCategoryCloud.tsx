@@ -12,8 +12,10 @@ const QUICK_LINKS = [
 
 export function ProductCategoryCloud({
   activeCategory,
+  onSelectCategory,
 }: {
   activeCategory: string | null;
+  onSelectCategory: (category: string | null) => void;
 }) {
   const { data, loading } = useApi<FacetsResponse>('/api/products/facets', []);
   const [expanded, setExpanded] = useState(false);
@@ -43,14 +45,15 @@ export function ProductCategoryCloud({
             {visible.map((c) => {
               const active = activeCategory === c.name;
               return (
-                <Link
+                <button
                   key={c.name}
-                  to={`/?category=${encodeURIComponent(c.name)}&sort=newest`}
+                  type="button"
+                  onClick={() => onSelectCategory(active ? null : c.name)}
                   className={`category-pill ${active ? 'category-pill-active' : ''}`}
-                  aria-current={active ? 'true' : undefined}
+                  aria-pressed={active}
                 >
                   {c.name}
-                </Link>
+                </button>
               );
             })}
           </div>

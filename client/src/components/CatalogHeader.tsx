@@ -93,7 +93,7 @@ export function CatalogHeader({
       id: 'featured',
       label: 'Shelf',
       value: 'Best Versions',
-      remove: () => onPatch({ featured: null, page: null }),
+      remove: () => onPatch({ featured: null, sort: 'newest', page: null }),
     });
   }
   if (filters.q) {
