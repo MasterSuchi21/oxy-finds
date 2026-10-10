@@ -40,7 +40,7 @@ export function HomeShowcase() {
             <Link to="/how-to" className="btn-secondary no-underline">
               How to order
             </Link>
-            <Link to="/video-tutorial" className="btn-secondary no-underline">
+            <Link to="/how-to-use-kakobuy" className="btn-secondary no-underline">
               Video tutorial
             </Link>
           </div>

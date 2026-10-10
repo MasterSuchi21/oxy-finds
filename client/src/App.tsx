@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { MetaProvider } from './context/MetaContext';
 import { Header, Footer } from './components/Header';
@@ -54,7 +54,11 @@ export function App() {
               <Route path="/products/:slug" element={<ProductPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/how-to" element={<HowToPage />} />
-              <Route path="/video-tutorial" element={<VideoTutorialPage />} />
+              <Route path="/how-to-use-kakobuy" element={<VideoTutorialPage />} />
+              <Route
+                path="/video-tutorial"
+                element={<Navigate to="/how-to-use-kakobuy" replace />}
+              />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

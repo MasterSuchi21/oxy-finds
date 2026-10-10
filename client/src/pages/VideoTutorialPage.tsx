@@ -6,7 +6,7 @@ export function VideoTutorialPage() {
       <Seo
         title="Video Tutorial | Oxy Finds"
         description="Watch the Oxy Finds tutorial to learn how to browse curated finds and shop through Kakobuy."
-        path="/video-tutorial"
+        path="/how-to-use-kakobuy"
       />
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="mx-auto max-w-4xl text-center">

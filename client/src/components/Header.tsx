@@ -12,9 +12,9 @@ const NAV: Array<{
     match: (l) => l.pathname === '/' && l.search === '' && !l.hash,
   },
   {
-    to: '/video-tutorial',
+    to: '/how-to-use-kakobuy',
     label: 'Video Tutorial',
-    match: (l) => l.pathname === '/video-tutorial',
+    match: (l) => l.pathname === '/how-to-use-kakobuy',
   },
   {
     to: '/spreadsheet',
