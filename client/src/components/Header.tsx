@@ -4,18 +4,23 @@ import { Logo } from './Logo';
 const NAV: Array<{
   to: string;
   label: string;
-  match: (loc: { pathname: string; search: string }) => boolean;
+  match: (loc: { pathname: string; search: string; hash: string }) => boolean;
 }> = [
   {
-  to: '/',
+    to: '/',
     label: 'Home',
-  match: (l) => l.pathname === '/' && l.search === '',
+    match: (l) => l.pathname === '/' && l.search === '' && !l.hash,
   },
   {
-  to: '/spreadsheet',
+    to: '/#tutorial',
+    label: 'Video Tutorial',
+    match: (l) => l.pathname === '/' && l.hash === '#tutorial',
+  },
+  {
+    to: '/spreadsheet',
     label: 'Products',
     match: (l) =>
-    l.pathname === '/spreadsheet' && !l.search.includes('featured=true'),
+      l.pathname === '/spreadsheet' && !l.search.includes('featured=true'),
   },
   {
     to: '/spreadsheet?featured=true',

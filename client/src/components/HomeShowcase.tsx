@@ -18,7 +18,7 @@ export function HomeShowcase() {
   const items = data?.items ?? [];
 
   return (
-    <section className="showcase-shell animate-fade-up text-center">
+    <section id="tutorial" className="showcase-shell animate-fade-up text-center">
       <div className="mx-auto grid max-w-6xl items-center gap-8 text-left lg:grid-cols-[0.85fr_1.15fr]">
         <div className="text-center lg:text-left">
           <p className="font-display text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
