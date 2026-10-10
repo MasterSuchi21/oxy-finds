@@ -12,9 +12,9 @@ const NAV: Array<{
     match: (l) => l.pathname === '/' && l.search === '' && !l.hash,
   },
   {
-    to: '/#tutorial',
+    to: '/video-tutorial',
     label: 'Video Tutorial',
-    match: (l) => l.pathname === '/' && l.hash === '#tutorial',
+    match: (l) => l.pathname === '/video-tutorial',
   },
   {
     to: '/spreadsheet',

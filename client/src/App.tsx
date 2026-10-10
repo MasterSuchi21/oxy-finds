@@ -6,6 +6,7 @@ import { CatalogPage } from './pages/CatalogPage';
 import { ProductPage } from './pages/ProductPage';
 import { FAQPage } from './pages/FAQPage';
 import { HowToPage } from './pages/HowToPage';
+import { VideoTutorialPage } from './pages/VideoTutorialPage';
 import { AdminPage } from './pages/AdminPage';
 import { VisitTracker } from './components/VisitTracker';
 import { Seo } from './components/Seo';
@@ -53,6 +54,7 @@ export function App() {
               <Route path="/products/:slug" element={<ProductPage />} />
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/how-to" element={<HowToPage />} />
+              <Route path="/video-tutorial" element={<VideoTutorialPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

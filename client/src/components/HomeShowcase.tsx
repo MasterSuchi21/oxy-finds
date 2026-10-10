@@ -18,9 +18,9 @@ export function HomeShowcase() {
   const items = data?.items ?? [];
 
   return (
-    <section id="tutorial" className="showcase-shell animate-fade-up text-center">
-      <div className="mx-auto grid max-w-6xl items-center gap-8 text-left lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="text-center lg:text-left">
+    <section className="showcase-shell animate-fade-up text-center">
+      <div className="mx-auto max-w-6xl">
+        <div>
           <p className="font-display text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">
             <span className="text-brand-gradient">OXYFINDS</span>
           </p>
@@ -28,17 +28,20 @@ export function HomeShowcase() {
             CODE: {promo} <span className="text-brand">25$ OFF</span>
           </p>
           <h1 className="mt-6 font-display text-2xl font-bold text-frost sm:text-3xl">
-            Watch the tutorial
+            Find your next pick
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-mist sm:text-base">
-            See how to browse curated finds and shop through Kakobuy.
+            Browse curated finds and shop through Kakobuy.
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link to="/spreadsheet?sort=newest" className="btn-primary no-underline">
               Browse all products
             </Link>
             <Link to="/how-to" className="btn-secondary no-underline">
               How to order
+            </Link>
+            <Link to="/video-tutorial" className="btn-secondary no-underline">
+              Video tutorial
             </Link>
           </div>
           <a
@@ -49,20 +52,6 @@ export function HomeShowcase() {
           >
             Sign up for 525$ coupons
           </a>
-        </div>
-
-        <div className="showcase-frame relative mx-auto w-full max-w-5xl px-2 sm:px-4">
-          <video
-            className="aspect-video w-full rounded-xl bg-black"
-            controls
-            playsInline
-            preload="none"
-            poster="/tutorial-poster.jpg"
-            aria-label="Oxy Finds tutorial video"
-          >
-            <source src="/1.mp4" type="video/mp4" />
-            Your browser does not support HTML video.
-          </video>
         </div>
       </div>
 
