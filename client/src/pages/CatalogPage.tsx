@@ -74,12 +74,14 @@ export function CatalogPage() {
         ? `${applied.category} Finds | Oxy Finds`
         : isFeatured
           ? 'Best Versions | Oxy Finds'
-          : isProductsBrowse
+          : isHome
             ? 'Kakobuy Spreadsheet over 15.000 Curated Items'
             : 'Oxy Finds | Curated Marketplace Finds';
   const pageDescription = q
     ? `Search curated marketplace listings for ${q} on Oxy Finds. Compare products, prices, and source marketplaces.`
-    : 'Discover curated Weidian, Taobao, and 1688 marketplace finds. Browse products, compare prices, and shop through Kakobuy.';
+    : isHome
+      ? 'Browse the Kakobuy spreadsheet with over 15,000 curated Weidian, Taobao, and 1688 finds. Compare prices and order through Kakobuy.'
+      : 'Discover curated Weidian, Taobao, and 1688 marketplace finds. Browse products, compare prices, and shop through Kakobuy.';
 
   function updateParams(patch: Record<string, string | null | undefined>) {
     const next = new URLSearchParams(searchParams);
@@ -129,7 +131,7 @@ export function CatalogPage() {
                 description: pageDescription,
                 potentialAction: {
                   '@type': 'SearchAction',
-                  target: 'https://www.kakobuy-oxy.com/spreadsheet?q={search_term_string}',
+                  target: 'https://www.kakobuy-oxy.com/?q={search_term_string}',
                   'query-input': 'required name=search_term_string',
                 },
               }
