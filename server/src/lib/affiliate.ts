@@ -11,7 +11,7 @@ import { config } from '../config.js';
 
 export type MarketSource = 'WD' | 'TB' | '1688';
 
-const AGENT_ENDPOINT = 'https://item.kakobuy.com/item/details';
+const AGENT_ENDPOINT = 'https://www.kakobuy.com/item/details';
 
 /** Detect which marketplace an item URL belongs to. */
 export function inferSource(itemUrl: string): MarketSource | null {
@@ -66,15 +66,13 @@ export function unwrapItemUrl(raw: string, maxDepth = 4): string {
 /** Build the outbound affiliate link for a marketplace item URL. */
 export function buildAffiliateUrl(
   itemUrl: string,
-  opts: { affcode?: string; source?: MarketSource | null } = {},
+  opts: { affcode?: string } = {},
 ): string {
   const affcode = opts.affcode ?? config.affcode;
   const target = unwrapItemUrl(itemUrl);
-  const source = opts.source ?? inferSource(target);
 
   const out = new URL(AGENT_ENDPOINT);
   out.searchParams.set('url', target);
-  if (source) out.searchParams.set('source', source);
   out.searchParams.set('affcode', affcode);
   return out.toString();
 }

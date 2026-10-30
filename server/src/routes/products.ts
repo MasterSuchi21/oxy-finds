@@ -148,7 +148,7 @@ productsRouter.get('/:slug/go', async (req, res, next) => {
 
     // Built per-request from the raw listing URL so the affcode is never
     // baked into stored data.
-    const target = buildAffiliateUrl(product.itemUrl, { source: product.source });
+    const target = buildAffiliateUrl(product.itemUrl);
 
     // Fire-and-forget: a failed counter must never block the redirect.
     Product.updateOne({ _id: product._id }, { $inc: { clicks: 1 } }).catch(() => {});

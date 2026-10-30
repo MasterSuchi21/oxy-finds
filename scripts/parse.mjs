@@ -33,9 +33,7 @@ function cleanText(s) {
     .trim();
 }
 
-// Buy buttons point at two different Kakobuy hosts depending on which
-// template the page uses: item.kakobuy.com on the homepage grids,
-// www.kakobuy.com on the catalog detail pages. Match either.
+// Match Kakobuy product links from source pages.
 const KAKOBUY_HREF_RE =
   /href="(https:\/\/(?:www\.|item\.)?kakobuy\.com\/item\/details[^"]+)"/i;
 
@@ -82,9 +80,8 @@ export function rewriteAffiliate(rawHref, affcode = AFFCODE) {
 
   const source = inferSource(inner) || u.searchParams.get('source');
 
-  const out = new URL('https://item.kakobuy.com/item/details');
+  const out = new URL('https://www.kakobuy.com/item/details');
   out.searchParams.set('url', inner);
-  if (source) out.searchParams.set('source', source);
   out.searchParams.set('affcode', affcode);
   return { affiliateUrl: out.toString(), itemUrl: inner, source, itemId: extractItemId(inner) };
 }
