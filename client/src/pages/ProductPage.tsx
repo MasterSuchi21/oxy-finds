@@ -124,6 +124,7 @@ export function ProductPage() {
                 <img
                   src={shown}
                   alt={product.title}
+                  referrerPolicy="no-referrer"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
@@ -151,6 +152,7 @@ export function ProductPage() {
                   <img
                     src={src}
                     alt=""
+                    referrerPolicy="no-referrer"
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-contain"

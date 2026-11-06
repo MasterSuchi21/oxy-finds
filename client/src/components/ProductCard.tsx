@@ -20,6 +20,7 @@ export function ProductCard({
             <img
               src={product.image}
               alt={product.title}
+              referrerPolicy="no-referrer"
               loading={priority ? 'eager' : 'lazy'}
               fetchPriority={priority ? 'high' : 'low'}
               decoding="async"

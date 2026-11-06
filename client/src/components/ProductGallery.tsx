@@ -81,6 +81,7 @@ export function ProductGallery({
             <img
               src={current}
               alt={total > 1 ? `${title} — image ${index + 1} of ${total}` : title}
+              referrerPolicy="no-referrer"
               onError={() => markFailed(current)}
               className="h-full w-full bg-white object-contain p-3"
             />
@@ -170,6 +171,7 @@ export function ProductGallery({
                   <img
                     src={src}
                     alt=""
+                    referrerPolicy="no-referrer"
                     loading="lazy"
                     onError={() => markFailed(src)}
                     className="h-full w-full object-contain"
